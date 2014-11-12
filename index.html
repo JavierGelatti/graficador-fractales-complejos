@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="es">
+    <meta charset="UTF-8">
+    <title>Graficador de Fractales</title>
+    <link rel="stylesheet" href="css/estilos.css"/>
+</head>
+<body>
+<div id="wrapper">
+<h1>Graficador de Fractales Complejos</h1>
+<section class="mandelbrot">
+    <h2>Conjunto de Mandelbrot</h2>
+    <canvas width="500" height="350" id="canvasMandelbrot"></canvas>
+</section>
+<section class="julia">
+    <h2>Conjunto de Julia</h2>
+    <canvas width="500" height="350" id="canvasJulia"></canvas>
+</section>
+</div>
+
+<script src="js/dominio/NumeroComplejo.js"></script>
+<script src="js/dominio/ConjuntoComplejo.js"></script>
+<script src="js/graficador/PlanoComplejo.js"></script>
+<script src="js/graficador.js"></script>
+</body>
+</html>

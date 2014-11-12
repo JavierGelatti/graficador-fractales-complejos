@@ -1,0 +1,28 @@
+html {
+    background: darkgray;
+    font-family: sans-serif;
+}
+#wrapper {
+    background: white;
+    width: 1100px;
+    padding: 1em 2em;
+    margin: 0 auto;
+    overflow: hidden;
+}
+canvas {
+    border: 1px solid black;
+}
+section {
+    border: 1px solid black;
+    background: white;
+    padding: 1em;
+}
+section.mandelbrot {
+    float: left;
+}
+section.julia {
+    float: right;
+}
+section > h2 {
+    margin: 0;
+}
