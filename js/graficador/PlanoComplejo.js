@@ -1,9 +1,10 @@
 var graficador = (function(graficador) {
 
-    graficador.PlanoComplejo = function(ancho, alto) {
+    graficador.PlanoComplejo = function(ancho, alto, coloreador) {
         this._capa = new utilidades.Canvas(document.createElement("canvas"));
         this._capa.ancho = ancho;
         this._capa.alto  = alto;
+        this._coloreador = coloreador;
     };
 
     Object.defineProperties(graficador.PlanoComplejo.prototype, {
@@ -35,6 +36,15 @@ var graficador = (function(graficador) {
                 this._capa.limpiar();
             }
         },
+        _dibujarPunto : {
+            value : function(x, y, datos) {
+                var color;
+                if (this._coloreador) {
+                    color = this._coloreador.getColor(datos);
+                }
+                this._capa.dibujarPunto(x, y, color);
+            }
+        },
         graficar : {
             value : function(conjuntoComplejo) {
                 var alto  = this._capa.alto;
@@ -51,9 +61,7 @@ var graficador = (function(graficador) {
                         var c = new dominio.NumeroComplejo(c_r, c_i);
                         var datos = conjuntoComplejo.getDatos(c);
 
-                        if (datos.pertenece) {
-                            this._capa.dibujarPunto(x, y);
-                        }
+                        this._dibujarPunto(x, y, datos);
                     }
                 }
             }

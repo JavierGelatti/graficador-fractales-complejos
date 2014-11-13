@@ -4,8 +4,9 @@ var canvasJulia      = new graficador.CanvasPlanoComplejo(document.getElementByI
 var ancho = canvasMandelbrot.ancho;
 var alto  = canvasMandelbrot.alto;
 
-var planoMandelbrot = new graficador.PlanoComplejo(ancho, alto);
-var planoJulia      = new graficador.PlanoComplejo(ancho, alto);
+var coloreador = new coloreadores.ColoreadorSimple();
+var planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, coloreador);
+var planoJulia      = new graficador.PlanoComplejo(ancho, alto, coloreador);
 
 var nroIteraciones = 100;
 var f = function(z, c) {

@@ -24,7 +24,8 @@ var dominio = (function(dominio) {
                 return {
                     modulo    : z.mod,
                     pertenece : i == maxIter,
-                    nroIter   : i
+                    nroIter   : i,
+                    nroMaxIter: maxIter
                 };
             }
         }
