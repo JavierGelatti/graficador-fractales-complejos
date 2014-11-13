@@ -1,19 +1,15 @@
 var graficador = (function(graficador) {
 
     graficador.PlanoComplejo = function(ancho, alto) {
-        this._capaFractal        = document.createElement("canvas");
-        this._capaFractal.width  = ancho;
-        this._capaFractal.height = alto;
-
-        this._ctx   = this._capaFractal.getContext("2d");
-        this._ancho = ancho;
-        this._alto  = alto;
+        this._capa = new utilidades.Canvas(document.createElement("canvas"));
+        this._capa.ancho = ancho;
+        this._capa.alto  = alto;
     };
 
     Object.defineProperties(graficador.PlanoComplejo.prototype, {
-        re : {
+        canvas : {
             get : function() {
-                return this._a;
+                return this._capa.canvas;
             }
         },
         _definirDimensiones : {
@@ -24,37 +20,64 @@ var graficador = (function(graficador) {
                 var r_min = conjuntoComplejo.ox - 2;
                 var r_max = conjuntoComplejo.ox + 2;
 
-                var anchoPlano = (i_max-i_min) * ancho/alto;
+                var anchoPlano = (i_max-i_min) * this._capa.ancho/this._capa.alto;
                 var r_med = (r_max + r_min)/2;
+
+                this._r_min = r_med - anchoPlano/2;
+                this._r_max = r_med + anchoPlano/2;
 
                 this._i_min = i_min;
                 this._i_max = i_max;
-                this._r_min = r_med - anchoPlano/2;
-                this._r_max = r_med + anchoPlano/2;
+            }
+        },
+        _limpiar : {
+            value : function() {
+                this._capa.limpiar();
             }
         },
         graficar : {
             value : function(conjuntoComplejo) {
-                var alto  = this._alto;
-                var ancho = this._ancho;
+                var alto  = this._capa.alto;
+                var ancho = this._capa.ancho;
 
                 this._definirDimensiones(conjuntoComplejo);
-                var r_min = this._r_min;
-                var r_max = this._r_max;
-                var i_min = this._i_min;
-                var i_max = this._i_max;
+                this._limpiar();
 
                 for (var y = 0; y < alto; y++) {
+                    var c_i = this._getIm(y);
                     for (var x = 0; x < ancho; x++) {
-                        var c_r = r_min + (r_max-r_min) * x / ancho;
-                        var c_i = i_max + (i_min-i_max) * y / alto;
+                        var c_r = this._getRe(x);
+
                         var c = new dominio.NumeroComplejo(c_r, c_i);
                         var datos = conjuntoComplejo.getDatos(c);
+
                         if (datos.pertenece) {
-                            this._ctx.fillRect(x, y, 1, 1);
+                            this._capa.dibujarPunto(x, y);
                         }
                     }
                 }
+            }
+        },
+        _getIm : {
+            value : function(y) {
+                return this._i_max + (this._i_min - this._i_max) * y / this._capa.alto;
+            }
+        },
+        _getRe : {
+            value : function(x) {
+                return this._r_min + (this._r_max - this._r_min) * x / this._capa.ancho;
+            }
+        },
+        getPunto : {
+            value : function(x, y) {
+                var c_r = this._getRe(x);
+                var c_i = this._getIm(y);
+                return new dominio.NumeroComplejo(c_r, c_i);
+            }
+        },
+        dibujarEn : {
+            value : function(ctx) {
+                ctx.drawImage(this._capa.canvas, 0, 0);
             }
         }
     });

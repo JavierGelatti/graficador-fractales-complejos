@@ -12,6 +12,9 @@ html {
 canvas {
     border: 1px solid black;
 }
+#canvasMandelbrot {
+    cursor: crosshair;
+}
 section {
     border: 1px solid black;
     background: white;

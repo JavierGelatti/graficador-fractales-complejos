@@ -13,15 +13,12 @@ var dominio = (function(dominio) {
     Object.defineProperties(ConjuntoComplejo.prototype, {
         getDatos : {
             value : function(z) {
-                var c = this._getC(z);
-
                 var maxIter = this._nroIteraciones;
-                var f = this._fn;
-                //var col = Math.exp(-mod2);
+                var f       = this._fn;
+                var c       = this._getC(z);
 
                 for (var i = 0; i < maxIter && z.mod2 < radioEscape2; i++) {
                     z = f(z, c);
-                    //col += Math.exp(-mod2);
                 }
 
                 return {
