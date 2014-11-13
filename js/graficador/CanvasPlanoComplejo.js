@@ -2,7 +2,7 @@ var graficador = (function(graficador) {
 
     graficador.CanvasPlanoComplejo = function(canvas) {
         utilidades.Canvas.call(this, canvas);
-        this._ctx.font = "20px monospace";
+        this._ctx.font = "14px monospace";
         this._ctx.textBaseline = "bottom";
         this._ctx.textAlign = "right";
     };
