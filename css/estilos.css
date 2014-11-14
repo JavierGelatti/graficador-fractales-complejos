@@ -14,6 +14,8 @@ html {
 canvas {
     border: 3px dashed darkgray;
     border-top: 0;
+    border-bottom: 0;
+    display: block;
 }
 #canvasMandelbrot {
     cursor: crosshair;
@@ -35,8 +37,7 @@ h1 {
     text-align: center;
     border-bottom: 1px solid gray;
     font-weight: normal;
-    margin: 0;
-    margin-bottom: .5em;
+    margin: 0 0 .5em;
 }
 section > h2 {
     margin: 0;
@@ -52,4 +53,14 @@ section.mandelbrot > h2 {
 }
 section.julia > h2 {
     background: midnightblue;
+}
+section > form {
+    background: darkslategray;
+    color: white;
+    padding: .3em 1.3em;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius:  10px;
+}
+section > form > label {
+    margin-left: 1em;
 }
