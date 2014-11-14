@@ -46,6 +46,19 @@ var dominio = (function(dominio) {
             get : function() {
                 return this._c;
             }
+        },
+        getTrayectoria : {
+            value : function(z) {
+                var trayectoria = [];
+                var maxIter = this._nroIteraciones;
+
+                trayectoria[0] = z;
+                for (var i = 0; i < maxIter && trayectoria[i].mod2 < radioEscape2; i++) {
+                    trayectoria[i+1] = f(trayectoria[i], this._c);
+                }
+
+                return trayectoria;
+            }
         }
     });
 

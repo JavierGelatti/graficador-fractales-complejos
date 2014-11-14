@@ -54,6 +54,11 @@ var utilidades = (function(utilidades) {
             value : function(evento, manejador) {
                 this.canvas.addEventListener(evento, manejador, true);
             }
+        },
+        removeEventListener : {
+            value : function(evento, manejador) {
+                this.canvas.removeEventListener(evento, manejador, true);
+            }
         }
     });
 

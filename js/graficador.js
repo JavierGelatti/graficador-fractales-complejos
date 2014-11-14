@@ -5,6 +5,7 @@ var coloreadorAzul  = new coloreadores.ColoreadorAzul();
 var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 
 var checkMostrarPunto = document.getElementById("mostrarPunto");
+var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
 
 var nroIteraciones = 100;
 var f = function(z, c) {
@@ -25,15 +26,26 @@ controlador.seleccionarC(o);
 var obtenerPunto = function(evt) {
     var canvas = evt.target;
     var rect = canvas.getBoundingClientRect();
-    return controlador.getPuntoMandelbrot(evt.clientX - rect.left -3, evt.clientY - rect.top);
+    return {
+        x : evt.clientX - rect.left -3,
+        y : evt.clientY - rect.top
+    };
+};
+
+var obtenerPuntoMandel = function(evt) {
+    return controlador.getPuntoMandelbrot(obtenerPunto(evt));
+};
+
+var obtenerPuntoJulia = function(evt) {
+    return controlador.getPuntoJulia(obtenerPunto(evt));
 };
 
 var seleccionarC = function(evt) {
-    controlador.seleccionarC(obtenerPunto(evt));
+    controlador.seleccionarC(obtenerPuntoMandel(evt));
 };
 
 var mostrarC  = function(evt) {
-    controlador.mostrarC(obtenerPunto(evt));
+    controlador.mostrarC(obtenerPuntoMandel(evt));
 };
 
 var redibujarMandel = function() {
@@ -48,8 +60,21 @@ var cambiarEstadoPunto = function(evt) {
     }
 };
 
+var mostrarT = function(evt) {
+    controlador.mostrarTrayectoria(obtenerPuntoJulia(evt));
+};
+
+var cambiarEstadoTrayectoria = function(evt) {
+    if (evt.target.checked) {
+        canvasJulia.addEventListener("mousemove", mostrarT);
+    } else {
+        canvasJulia.removeEventListener("mousemove", mostrarT);
+    }
+};
+
 canvasMandelbrot.addEventListener("click", seleccionarC);
 canvasMandelbrot.addEventListener("mousemove", mostrarC);
 canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
 
 checkMostrarPunto.addEventListener("change", cambiarEstadoPunto);
+checkMostrarTrayectoria.addEventListener("change", cambiarEstadoTrayectoria);

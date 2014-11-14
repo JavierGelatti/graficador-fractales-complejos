@@ -36,9 +36,7 @@ var aplicacion = (function(aplicacion) {
                 this.redibujarMandelbrot();
                 planoJulia.graficar(conjuntoJulia);
 
-                canvasJulia.limpiar();
-                canvasJulia.dibujar(planoJulia.canvas);
-                canvasJulia.mostrarUbicacion(c);
+                this.redibujarJulia(c);
             }
         },
         _mostrarCSeleccionado : {
@@ -65,8 +63,13 @@ var aplicacion = (function(aplicacion) {
             }
         },
         getPuntoMandelbrot : {
-            value : function(x, y) {
-                return planoMandelbrot.getComplejo(x, y);
+            value : function(p) {
+                return planoMandelbrot.getComplejo(p.x, p.y);
+            }
+        },
+        getPuntoJulia : {
+            value : function(p) {
+                return planoJulia.getComplejo(p.x, p.y);
             }
         },
         mostrarPuntoSeleccionado : {
@@ -89,6 +92,20 @@ var aplicacion = (function(aplicacion) {
                 canvasMandelbrot.limpiar();
                 canvasMandelbrot.dibujar(planoMandelbrot.canvas);
                 this._mostrarCSeleccionado();
+            }
+        },
+        redibujarJulia : {
+            value : function(c) {
+                canvasJulia.limpiar();
+                canvasJulia.dibujar(planoJulia.canvas);
+                canvasJulia.mostrarUbicacion(c);
+            }
+        },
+        mostrarTrayectoria : {
+            value : function(c) {
+                this.redibujarJulia(conjuntoJulia.c);
+                var trayectoria = conjuntoJulia.getTrayectoria(c);
+                canvasJulia.dibujar(planoJulia.getCanvasTrayectoria(trayectoria));
             }
         }
     });

@@ -2,8 +2,9 @@ var graficador = (function(graficador) {
 
     graficador.PlanoComplejo = function(ancho, alto, coloreador) {
         this._capa = new utilidades.Canvas(document.createElement("canvas"));
-        this._capa.ancho = ancho;
-        this._capa.alto  = alto;
+        this._capaTrayectoria = new utilidades.Canvas(document.createElement("canvas"));
+        this._capa.ancho = this._capaTrayectoria.ancho = ancho;
+        this._capa.alto  = this._capaTrayectoria.alto  = alto;
         this._coloreador = coloreador;
     };
 
@@ -98,6 +99,23 @@ var graficador = (function(graficador) {
         dibujarEn : {
             value : function(ctx) {
                 ctx.drawImage(this._capa.canvas, 0, 0);
+            }
+        },
+        getCanvasTrayectoria : {
+            value : function(trayectoria) {
+                this._capaTrayectoria.limpiar();
+                var ctx = this._capaTrayectoria.canvas.getContext("2d");
+                var n = trayectoria.length;
+                ctx.lineWidth = 2;
+                ctx.lineJoin = "round";
+                ctx.strokeStyle = 'blue';
+                ctx.beginPath();
+                for (var i = 0; i < n; i++) {
+                    var p = this.getPunto(trayectoria[i]);
+                    ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+                return this._capaTrayectoria.canvas;
             }
         }
     });
