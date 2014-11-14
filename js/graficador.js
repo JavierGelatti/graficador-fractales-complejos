@@ -7,6 +7,12 @@ var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 var checkMostrarPunto = document.getElementById("mostrarPunto");
 var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
 
+var txtRe = document.getElementById("re");
+var txtIm = document.getElementById("im");
+var frmC  = document.getElementById("cManual");
+var btnC  = document.querySelector(".complejo > span");
+var panelC= document.querySelector(".complejo");
+
 var nroIteraciones = 100;
 var f = function(z, c) {
     return z.multiplicar(z).sumar(c);
@@ -15,7 +21,8 @@ var f = function(z, c) {
 var controlador = new aplicacion.ControladorGraficador(
     canvasMandelbrot, coloreadorRojo,
     canvasJulia     , coloreadorAzul,
-    nroIteraciones  , f
+    nroIteraciones  , f,
+    txtRe           , txtIm
 );
 
 var o = new dominio.NumeroComplejo(0, 0);
@@ -69,7 +76,25 @@ var cambiarEstadoTrayectoria = function(evt) {
         canvasJulia.addEventListener("mousemove", mostrarT);
     } else {
         canvasJulia.removeEventListener("mousemove", mostrarT);
+        controlador.redibujarJulia();
     }
+};
+
+var seleccionarCManual = function(evt) {
+    evt.preventDefault();
+    if (!txtRe.checkValidity() || !txtIm.checkValidity()) {
+        alert("Por favor, ingrese solo números");
+        return false;
+    }
+    var re = parseFloat(txtRe.value);
+    var im = parseFloat(txtIm.value);
+
+    controlador.seleccionarC(new dominio.NumeroComplejo(re, im));
+    return false;
+};
+
+var cambiarVisibilidadC = function() {
+    panelC.classList.toggle("activado");
 };
 
 canvasMandelbrot.addEventListener("click", seleccionarC);
@@ -78,3 +103,6 @@ canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
 
 checkMostrarPunto.addEventListener("change", cambiarEstadoPunto);
 checkMostrarTrayectoria.addEventListener("change", cambiarEstadoTrayectoria);
+
+frmC.addEventListener("submit", seleccionarCManual, true);
+btnC.addEventListener("click", cambiarVisibilidadC, true);

@@ -11,11 +11,13 @@ var aplicacion = (function(aplicacion) {
     var conjuntoJulia,
         conjuntoMandelbrot;
 
+    var txtRe, txtIm;
+
     var nroIteraciones, f;
 
     var puntoVisible = false;
 
-    aplicacion.ControladorGraficador = function(cnvsMandel, colorMandel, cnvsJulia, colorJulia, nroIter, fn) {
+    aplicacion.ControladorGraficador = function(cnvsMandel, colorMandel, cnvsJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
         canvasMandelbrot = cnvsMandel;
         canvasJulia = cnvsJulia;
 
@@ -24,6 +26,9 @@ var aplicacion = (function(aplicacion) {
 
         ancho = canvasMandelbrot.ancho;
         alto  = canvasMandelbrot.alto;
+
+        txtRe = _txtRe;
+        txtIm = _txtIm;
 
         planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, colorMandel);
         planoJulia      = new graficador.PlanoComplejo(ancho, alto, colorJulia);
@@ -34,9 +39,11 @@ var aplicacion = (function(aplicacion) {
             value : function(c) {
                 conjuntoJulia = new dominio.ConjuntoJulia(f, nroIteraciones, c);
                 this.redibujarMandelbrot();
+                txtIm.value = c.im;
+                txtRe.value = c.re;
                 planoJulia.graficar(conjuntoJulia);
 
-                this.redibujarJulia(c);
+                this.redibujarJulia();
             }
         },
         _mostrarCSeleccionado : {
@@ -95,15 +102,15 @@ var aplicacion = (function(aplicacion) {
             }
         },
         redibujarJulia : {
-            value : function(c) {
+            value : function() {
                 canvasJulia.limpiar();
                 canvasJulia.dibujar(planoJulia.canvas);
-                canvasJulia.mostrarUbicacion(c);
+                canvasJulia.mostrarUbicacion(conjuntoJulia.c);
             }
         },
         mostrarTrayectoria : {
             value : function(c) {
-                this.redibujarJulia(conjuntoJulia.c);
+                this.redibujarJulia();
                 var trayectoria = conjuntoJulia.getTrayectoria(c);
                 canvasJulia.dibujar(planoJulia.getCanvasTrayectoria(trayectoria));
             }

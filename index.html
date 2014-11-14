@@ -11,18 +11,28 @@
 <section class="mandelbrot">
     <h2>Conjunto de Mandelbrot</h2>
     <canvas width="500" height="350" id="canvasMandelbrot"></canvas>
-    <form>
+    <div>
         <label for="mostrarPunto">Mostrar Punto</label>
         <input type="checkbox" id="mostrarPunto"/>
-    </form>
+    </div>
 </section>
 <section class="julia">
     <h2>Conjunto de Julia</h2>
     <canvas width="500" height="350" id="canvasJulia"></canvas>
-    <form>
+    <div>
         <label for="mostrarTrayectoria">Mostrar Trayectoria</label>
         <input type="checkbox" id="mostrarTrayectoria"/>
-    </form>
+        <form class="complejo" id="cManual">
+            <span>c</span> =
+            <label for="re">Parte real</label>
+            <input id="re" type="number" step="any"/>
+            +
+            <label for="im">Parte imaginaria</label>
+            <input id="im" type="number" step="any"/>
+            i
+            <input type="submit" value="Graficar"/>
+        </form>
+    </div>
 </section>
 </div>
 
