@@ -76,11 +76,23 @@ var graficador = (function(graficador) {
                 return this._r_min + (this._r_max - this._r_min) * x / this._capa.ancho;
             }
         },
-        getPunto : {
+        getComplejo : {
             value : function(x, y) {
                 var c_r = this._getRe(x);
                 var c_i = this._getIm(y);
+
                 return new dominio.NumeroComplejo(c_r, c_i);
+            }
+        },
+        getPunto : {
+            value : function(c) {
+                var x = (c.re - this._r_min) / (this._r_max - this._r_min) * this._capa.ancho;
+                var y = (c.im - this._i_max) / (this._i_min - this._i_max) * this._capa.alto;
+
+                return {
+                    x : x,
+                    y : y
+                };
             }
         },
         dibujarEn : {

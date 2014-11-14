@@ -64,3 +64,6 @@ section > form {
 section > form > label {
     margin-left: 1em;
 }
+section > form > input {
+    vertical-align: middle;
+}

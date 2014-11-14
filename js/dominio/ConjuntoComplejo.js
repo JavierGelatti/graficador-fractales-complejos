@@ -33,13 +33,18 @@ var dominio = (function(dominio) {
 
     dominio.ConjuntoJulia = function(fn, nroIter, c) {
         ConjuntoComplejo.call(this, fn, nroIter);
-        this.c = c;
+        this._c = c;
     };
 
     dominio.ConjuntoJulia.prototype = Object.create(ConjuntoComplejo.prototype, {
         _getC : {
             value : function() {
-                return this.c;
+                return this._c;
+            }
+        },
+        c : {
+            get : function() {
+                return this._c;
             }
         }
     });

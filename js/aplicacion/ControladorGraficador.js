@@ -13,6 +13,8 @@ var aplicacion = (function(aplicacion) {
 
     var nroIteraciones, f;
 
+    var puntoVisible = false;
+
     aplicacion.ControladorGraficador = function(cnvsMandel, colorMandel, cnvsJulia, colorJulia, nroIter, fn) {
         canvasMandelbrot = cnvsMandel;
         canvasJulia = cnvsJulia;
@@ -31,17 +33,27 @@ var aplicacion = (function(aplicacion) {
         seleccionarC : {
             value : function(c) {
                 conjuntoJulia = new dominio.ConjuntoJulia(f, nroIteraciones, c);
-
+                this.redibujarMandelbrot();
                 planoJulia.graficar(conjuntoJulia);
+
                 canvasJulia.limpiar();
                 canvasJulia.dibujar(planoJulia.canvas);
                 canvasJulia.mostrarUbicacion(c);
             }
         },
+        _mostrarCSeleccionado : {
+            value : function() {
+                if (puntoVisible) {
+                    var c = conjuntoJulia.c;
+                    var p = planoMandelbrot.getPunto(c);
+
+                    canvasMandelbrot.mostrarPunto(p);
+                }
+            }
+        },
         mostrarC : {
             value : function(c) {
-                canvasMandelbrot.limpiar();
-                canvasMandelbrot.dibujar(planoMandelbrot.canvas);
+                this.redibujarMandelbrot();
                 canvasMandelbrot.mostrarUbicacion(c);
             }
         },
@@ -54,7 +66,29 @@ var aplicacion = (function(aplicacion) {
         },
         getPuntoMandelbrot : {
             value : function(x, y) {
-                return planoMandelbrot.getPunto(x, y);
+                return planoMandelbrot.getComplejo(x, y);
+            }
+        },
+        mostrarPuntoSeleccionado : {
+            value : function() {
+                puntoVisible = true;
+                var c = conjuntoJulia.c;
+                var p = planoMandelbrot.getPunto(c);
+
+                canvasMandelbrot.mostrarPunto(p);
+            }
+        },
+        ocultarPuntoSeleccionado : {
+            value : function() {
+                puntoVisible = false;
+                this.redibujarMandelbrot();
+            }
+        },
+        redibujarMandelbrot : {
+            value : function() {
+                canvasMandelbrot.limpiar();
+                canvasMandelbrot.dibujar(planoMandelbrot.canvas);
+                this._mostrarCSeleccionado();
             }
         }
     });
