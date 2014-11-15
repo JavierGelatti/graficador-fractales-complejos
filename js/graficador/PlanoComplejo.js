@@ -108,15 +108,18 @@ var graficador = (function(graficador) {
                 this._capaTrayectoria.limpiar();
                 var ctx = this._capaTrayectoria.canvas.getContext("2d");
                 var n = trayectoria.length;
+
                 ctx.lineWidth = 2;
                 ctx.lineJoin = "round";
                 ctx.strokeStyle = 'blue';
+
                 ctx.beginPath();
                 for (var i = 0; i < n; i++) {
                     var p = this.getPunto(trayectoria[i]);
                     ctx.lineTo(p.x, p.y);
                 }
                 ctx.stroke();
+
                 return this._capaTrayectoria.canvas;
             }
         },

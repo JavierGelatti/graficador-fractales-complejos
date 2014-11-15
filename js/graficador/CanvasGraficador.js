@@ -30,12 +30,12 @@ var graficador = (function(graficador) {
                 var ctx = this._ctx;
 
                 ctx.save();
+                ctx.fillStyle = 'red';
+                ctx.strokeStyle = 'darkred';
+                ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, radio, 0, 2 * Math.PI, false);
-                ctx.fillStyle = 'red';
                 ctx.fill();
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = 'darkred';
                 ctx.stroke();
                 ctx.restore();
             }

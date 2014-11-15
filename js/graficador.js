@@ -4,7 +4,7 @@ var canvasJulia      = new graficador.CanvasGraficador(document.getElementById("
 var coloreadorAzul  = new coloreadores.ColoreadorAzul();
 var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 
-var checkMostrarPunto = document.getElementById("mostrarPunto");
+var checkMostrarPunto       = document.getElementById("mostrarPunto");
 var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
 
 var btnZoomMandel  = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
@@ -29,11 +29,7 @@ var controlador = new aplicacion.ControladorGraficador(
     nroIteraciones  , f,
     txtRe           , txtIm
 );
-
-var o = new dominio.NumeroComplejo(0, 0);
-controlador.graficarMandelbrot();
-controlador.mostrarC(o);
-controlador.seleccionarC(o);
+controlador.iniciarGraficador();
 
 var obtenerPunto = function(evt) {
     var canvas = evt.target;
@@ -44,46 +40,42 @@ var obtenerPunto = function(evt) {
     };
 };
 
-var obtenerPuntoMandel = function(evt) {
-    return controlador.getPuntoMandelbrot(obtenerPunto(evt));
-};
-
-var obtenerPuntoJulia = function(evt) {
-    return controlador.getPuntoJulia(obtenerPunto(evt));
-};
-
 var seleccionarC = function(evt) {
-    controlador.seleccionarC(obtenerPuntoMandel(evt));
+    controlador.seleccionarC(obtenerPunto(evt));
 };
+canvasMandelbrot.addEventListener("click", seleccionarC);
 
 var mostrarC  = function(evt) {
-    controlador.mostrarC(obtenerPuntoMandel(evt));
+    controlador.mostrarUbicacionPunto(obtenerPunto(evt));
 };
+canvasMandelbrot.addEventListener("mousemove", mostrarC);
 
 var redibujarMandel = function() {
     controlador.redibujarMandelbrot();
 };
+canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
 
-var cambiarEstadoPunto = function(evt) {
+var cambiarEstadoMostrarPuntoSeleccionado = function(evt) {
     if (evt.target.checked) {
         controlador.mostrarPuntoSeleccionado();
     } else {
         controlador.ocultarPuntoSeleccionado();
     }
 };
+checkMostrarPunto.addEventListener("change", cambiarEstadoMostrarPuntoSeleccionado);
 
-var mostrarT = function(evt) {
-    controlador.mostrarTrayectoria(obtenerPuntoJulia(evt));
+var mostrarTrayectoria = function(evt) {
+    controlador.mostrarTrayectoria(obtenerPunto(evt));
 };
-
-var cambiarEstadoTrayectoria = function(evt) {
+var cambiarEstadoMostrarTrayectoria = function(evt) {
     if (evt.target.checked) {
-        canvasJulia.addEventListener("mousemove", mostrarT);
+        canvasJulia.addEventListener("mousemove", mostrarTrayectoria);
     } else {
-        canvasJulia.removeEventListener("mousemove", mostrarT);
+        canvasJulia.removeEventListener("mousemove", mostrarTrayectoria);
         controlador.redibujarJulia();
     }
 };
+checkMostrarTrayectoria.addEventListener("change", cambiarEstadoMostrarTrayectoria);
 
 var seleccionarCManual = function(evt) {
     evt.preventDefault();
@@ -97,72 +89,57 @@ var seleccionarCManual = function(evt) {
     controlador.seleccionarC(new dominio.NumeroComplejo(re, im));
     return false;
 };
+frmC.addEventListener("submit", seleccionarCManual, true);
 
-var cambiarVisibilidadC = function() {
+var cambiarVisibilidadPanelIngresoC = function() {
     panelC.classList.toggle("activado");
+};
+btnC.addEventListener("click", cambiarVisibilidadPanelIngresoC, true);
+
+var comando = function(fn, args) {
+    return function() {
+        fn.apply(this, args);
+    };
+};
+var activarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
+    canvas.removeEventListener("click", fnAntes, true);
+    canvas.addEventListener("click", fnZoom, true);
+    canvas.classList.add("zoomActivado");
+
+    btnZoom.onclick = comando(desactivarZoom, arguments);
+    btnZoom.classList.add("activado");
+};
+var desactivarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
+    canvas.addEventListener("click", fnAntes, true);
+    canvas.removeEventListener("click", fnZoom, true);
+    canvas.classList.remove("zoomActivado");
+
+    btnZoom.onclick = comando(activarZoom, arguments);
+    btnZoom.classList.remove("activado");
 };
 
 var zoomMandel = function(evt) {
-    controlador.zoomMandelbrot(obtenerPuntoMandel(evt));
+    controlador.zoomMandelbrot(obtenerPunto(evt));
 };
-
-var desactivarZoomMandel = function() {
-    canvasMandelbrot.addEventListener("click", seleccionarC);
-    canvasMandelbrot.removeEventListener("click", zoomMandel);
-    canvasMandelbrot.canvas.classList.remove("zoomActivado");
-    btnZoomMandel.addEventListener("click", activarZoomMandel, true);
-    btnZoomMandel.removeEventListener("click", desactivarZoomMandel, true);
-    btnZoomMandel.classList.remove("activado");
-};
-
 var activarZoomMandel = function() {
-    canvasMandelbrot.removeEventListener("click", seleccionarC);
-    canvasMandelbrot.addEventListener("click", zoomMandel);
-    canvasMandelbrot.canvas.classList.add("zoomActivado");
-    btnZoomMandel.removeEventListener("click", activarZoomMandel, true);
-    btnZoomMandel.addEventListener("click", desactivarZoomMandel, true);
-    btnZoomMandel.classList.add("activado");
+    activarZoom(canvasMandelbrot.canvas, btnZoomMandel, seleccionarC, zoomMandel);
 };
+btnZoomMandel.onclick = activarZoomMandel;
 
 var reiniciarZoomMandel = function() {
     controlador.reiniciarZoomMandelbrot();
 };
+btnResetMandel.addEventListener("click", reiniciarZoomMandel, true);
 
 var zoomJulia = function(evt) {
-    controlador.zoomJulia(obtenerPuntoJulia(evt));
+    controlador.zoomJulia(obtenerPunto(evt));
 };
-
-var desactivarZoomJulia = function() {
-    canvasJulia.removeEventListener("click", zoomJulia);
-    canvasJulia.canvas.classList.remove("zoomActivado");
-    btnZoomJulia.addEventListener("click", activarZoomJulia, true);
-    btnZoomJulia.removeEventListener("click", desactivarZoomJulia, true);
-    btnZoomJulia.classList.remove("activado");
-};
-
 var activarZoomJulia = function() {
-    canvasJulia.addEventListener("click", zoomJulia);
-    canvasJulia.canvas.classList.add("zoomActivado");
-    btnZoomJulia.removeEventListener("click", activarZoomJulia, true);
-    btnZoomJulia.addEventListener("click", desactivarZoomJulia, true);
-    btnZoomJulia.classList.add("activado");
+    activarZoom(canvasJulia.canvas, btnZoomJulia, undefined, zoomJulia);
 };
+btnZoomJulia.onclick = activarZoomJulia;
 
 var reiniciarZoomJulia = function() {
     controlador.reiniciarZoomJulia();
 };
-
-canvasMandelbrot.addEventListener("click", seleccionarC);
-canvasMandelbrot.addEventListener("mousemove", mostrarC);
-canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
-
-checkMostrarPunto.addEventListener("change", cambiarEstadoPunto);
-checkMostrarTrayectoria.addEventListener("change", cambiarEstadoTrayectoria);
-
-frmC.addEventListener("submit", seleccionarCManual, true);
-btnC.addEventListener("click", cambiarVisibilidadC, true);
-
-btnZoomMandel.addEventListener("click", activarZoomMandel, true);
-btnResetMandel.addEventListener("click", reiniciarZoomMandel, true);
-btnZoomJulia.addEventListener("click", activarZoomJulia, true);
 btnResetJulia.addEventListener("click", reiniciarZoomJulia, true);
