@@ -7,6 +7,11 @@ var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 var checkMostrarPunto = document.getElementById("mostrarPunto");
 var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
 
+var btnZoomMandel  = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
+var btnResetMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
+var btnZoomJulia   = document.querySelector("#wrapper > section.julia > h2 > span.zoom");
+var btnResetJulia  = document.querySelector("#wrapper > section.julia > h2 > span.reiniciar");
+
 var txtRe = document.getElementById("re");
 var txtIm = document.getElementById("im");
 var frmC  = document.getElementById("cManual");
@@ -97,6 +102,56 @@ var cambiarVisibilidadC = function() {
     panelC.classList.toggle("activado");
 };
 
+var zoomMandel = function(evt) {
+    controlador.zoomMandelbrot(obtenerPuntoMandel(evt));
+};
+
+var desactivarZoomMandel = function() {
+    canvasMandelbrot.addEventListener("click", seleccionarC);
+    canvasMandelbrot.removeEventListener("click", zoomMandel);
+    canvasMandelbrot.canvas.classList.remove("zoomActivado");
+    btnZoomMandel.addEventListener("click", activarZoomMandel, true);
+    btnZoomMandel.removeEventListener("click", desactivarZoomMandel, true);
+    btnZoomMandel.classList.remove("activado");
+};
+
+var activarZoomMandel = function() {
+    canvasMandelbrot.removeEventListener("click", seleccionarC);
+    canvasMandelbrot.addEventListener("click", zoomMandel);
+    canvasMandelbrot.canvas.classList.add("zoomActivado");
+    btnZoomMandel.removeEventListener("click", activarZoomMandel, true);
+    btnZoomMandel.addEventListener("click", desactivarZoomMandel, true);
+    btnZoomMandel.classList.add("activado");
+};
+
+var reiniciarZoomMandel = function() {
+    controlador.reiniciarZoomMandelbrot();
+};
+
+var zoomJulia = function(evt) {
+    controlador.zoomJulia(obtenerPuntoJulia(evt));
+};
+
+var desactivarZoomJulia = function() {
+    canvasJulia.removeEventListener("click", zoomJulia);
+    canvasJulia.canvas.classList.remove("zoomActivado");
+    btnZoomJulia.addEventListener("click", activarZoomJulia, true);
+    btnZoomJulia.removeEventListener("click", desactivarZoomJulia, true);
+    btnZoomJulia.classList.remove("activado");
+};
+
+var activarZoomJulia = function() {
+    canvasJulia.addEventListener("click", zoomJulia);
+    canvasJulia.canvas.classList.add("zoomActivado");
+    btnZoomJulia.removeEventListener("click", activarZoomJulia, true);
+    btnZoomJulia.addEventListener("click", desactivarZoomJulia, true);
+    btnZoomJulia.classList.add("activado");
+};
+
+var reiniciarZoomJulia = function() {
+    controlador.reiniciarZoomJulia();
+};
+
 canvasMandelbrot.addEventListener("click", seleccionarC);
 canvasMandelbrot.addEventListener("mousemove", mostrarC);
 canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
@@ -106,3 +161,8 @@ checkMostrarTrayectoria.addEventListener("change", cambiarEstadoTrayectoria);
 
 frmC.addEventListener("submit", seleccionarCManual, true);
 btnC.addEventListener("click", cambiarVisibilidadC, true);
+
+btnZoomMandel.addEventListener("click", activarZoomMandel, true);
+btnResetMandel.addEventListener("click", reiniciarZoomMandel, true);
+btnZoomJulia.addEventListener("click", activarZoomJulia, true);
+btnResetJulia.addEventListener("click", reiniciarZoomJulia, true);

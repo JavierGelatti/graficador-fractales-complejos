@@ -51,7 +51,9 @@ var graficador = (function(graficador) {
                 var alto  = this._capa.alto;
                 var ancho = this._capa.ancho;
 
-                this._definirDimensiones(conjuntoComplejo);
+                if (!this._r_min)
+                    this._definirDimensiones(conjuntoComplejo);
+
                 this._limpiar();
 
                 for (var y = 0; y < alto; y++) {
@@ -116,6 +118,24 @@ var graficador = (function(graficador) {
                 }
                 ctx.stroke();
                 return this._capaTrayectoria.canvas;
+            }
+        },
+        hacerZoomEn : {
+            value : function(centro) {
+                var factorZoom = 4;
+
+                var ancho = this._r_max - this._r_min;
+                var alto  = this._i_min - this._i_max;
+
+                this._r_min = centro.re - ancho/factorZoom;
+                this._r_max = centro.re + ancho/factorZoom;
+                this._i_max = centro.im - alto/factorZoom;
+                this._i_min = centro.im + alto/factorZoom;
+            }
+        },
+        reiniciarZoom : {
+            value : function() {
+                this._r_min = undefined;
             }
         }
     });

@@ -114,6 +114,34 @@ var aplicacion = (function(aplicacion) {
                 var trayectoria = conjuntoJulia.getTrayectoria(c);
                 canvasJulia.dibujar(planoJulia.getCanvasTrayectoria(trayectoria));
             }
+        },
+        zoomMandelbrot : {
+            value : function(c) {
+                planoMandelbrot.hacerZoomEn(c);
+                planoMandelbrot.graficar(conjuntoMandelbrot);
+                this.redibujarMandelbrot();
+            }
+        },
+        reiniciarZoomMandelbrot : {
+            value : function() {
+                planoMandelbrot.reiniciarZoom();
+                planoMandelbrot.graficar(conjuntoMandelbrot);
+                this.redibujarMandelbrot();
+            }
+        },
+        zoomJulia : {
+            value : function(c) {
+                planoJulia.hacerZoomEn(c);
+                planoJulia.graficar(conjuntoJulia);
+                this.redibujarJulia();
+            }
+        },
+        reiniciarZoomJulia : {
+            value : function() {
+                planoJulia.reiniciarZoom();
+                planoJulia.graficar(conjuntoJulia);
+                this.redibujarJulia();
+            }
         }
     });
 
