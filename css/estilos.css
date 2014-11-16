@@ -80,6 +80,7 @@ section > h2 > span {
     margin: 0 0 0 5px;
     position: relative;
     cursor: pointer;
+    text-align: center;
     transition: transform  .20s ease-in-out,
                 background .03s ease-in;
 }
@@ -131,6 +132,19 @@ section > h2 > span.zoom:after {
     position: absolute;
     top: 13px;
     left: 11px;
+}
+section > h2 > span.nroIteraciones {
+    width: inherit;
+    padding: 0 6px;
+    background: rgba(0,0,0,0.5);
+    text-shadow: none;
+}
+section > h2 > span.nroIteraciones:hover {
+    transform: scale(1);
+}
+section > h2 > span.nroIteraciones:active {
+    transform: scale(1.1);
+    transition: transform .05s ease-in-out;
 }
 section > div {
     background: darkslategray;

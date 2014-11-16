@@ -28,6 +28,14 @@ var dominio = (function(dominio) {
                     nroMaxIter: maxIter
                 };
             }
+        },
+        nroIteraciones : {
+            get : function() {
+                return this._nroIteraciones;
+            },
+            set : function(n) {
+                this._nroIteraciones = n;
+            }
         }
     });
 

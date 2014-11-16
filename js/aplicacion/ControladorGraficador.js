@@ -13,7 +13,9 @@ var aplicacion = (function(aplicacion) {
 
     var txtRe, txtIm;
 
-    var nroIteraciones, f;
+    var nroIteracionesMandelbrot,
+        nroIteracionesJulia,
+        f;
 
     var puntoVisible = false;
 
@@ -21,7 +23,7 @@ var aplicacion = (function(aplicacion) {
         canvasMandelbrot = cnvsMandel;
         canvasJulia = cnvsJulia;
 
-        nroIteraciones = nroIter;
+        nroIteracionesMandelbrot = nroIteracionesJulia = nroIter;
         f = fn;
 
         ancho = canvasMandelbrot.ancho;
@@ -37,7 +39,7 @@ var aplicacion = (function(aplicacion) {
     Object.defineProperties(aplicacion.ControladorGraficador.prototype, {
         iniciarGraficador : {
             value : function() {
-                conjuntoMandelbrot = new dominio.ConjuntoMandelbrot(f, nroIteraciones);
+                conjuntoMandelbrot = new dominio.ConjuntoMandelbrot(f, nroIteracionesMandelbrot);
                 planoMandelbrot.graficar(conjuntoMandelbrot);
 
                 var o = new dominio.NumeroComplejo(0, 0);
@@ -50,7 +52,7 @@ var aplicacion = (function(aplicacion) {
                     c = this._getComplejoMandelbrot(c);
                 }
 
-                conjuntoJulia = new dominio.ConjuntoJulia(f, nroIteraciones, c);
+                conjuntoJulia = new dominio.ConjuntoJulia(f, nroIteracionesJulia, c);
                 this.redibujarMandelbrot();
                 txtIm.value = c.im;
                 txtRe.value = c.re;
@@ -146,6 +148,22 @@ var aplicacion = (function(aplicacion) {
         reiniciarZoomJulia : {
             value : function() {
                 planoJulia.reiniciarZoom();
+                planoJulia.graficar(conjuntoJulia);
+                this.redibujarJulia();
+            }
+        },
+        definirIteracionesMandelbrot : {
+            value : function(n) {
+                nroIteracionesMandelbrot = n;
+                conjuntoMandelbrot.nroIteraciones = n;
+                planoMandelbrot.graficar(conjuntoMandelbrot);
+                this.redibujarMandelbrot();
+            }
+        },
+        definirIteracionesJulia : {
+            value : function(n) {
+                nroIteracionesJulia = n;
+                conjuntoJulia.nroIteraciones = n;
                 planoJulia.graficar(conjuntoJulia);
                 this.redibujarJulia();
             }

@@ -7,10 +7,12 @@ var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 var checkMostrarPunto       = document.getElementById("mostrarPunto");
 var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
 
-var btnZoomMandel  = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
-var btnResetMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
-var btnZoomJulia   = document.querySelector("#wrapper > section.julia > h2 > span.zoom");
-var btnResetJulia  = document.querySelector("#wrapper > section.julia > h2 > span.reiniciar");
+var btnZoomMandel   = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
+var btnResetMandel  = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
+var txtNroIterMandel= document.querySelector("#wrapper > section.mandelbrot > h2 > span.nroIteraciones");
+var btnZoomJulia    = document.querySelector("#wrapper > section.julia > h2 > span.zoom");
+var btnResetJulia   = document.querySelector("#wrapper > section.julia > h2 > span.reiniciar");
+var txtNroIterJulia = document.querySelector("#wrapper > section.julia > h2 > span.nroIteraciones");
 
 var txtRe = document.getElementById("re");
 var txtIm = document.getElementById("im");
@@ -19,6 +21,9 @@ var btnC  = document.querySelector(".complejo > span");
 var panelC= document.querySelector(".complejo");
 
 var nroIteraciones = 100;
+txtNroIterMandel.innerHTML = nroIteraciones;
+txtNroIterJulia.innerHTML  = nroIteraciones;
+
 var f = function(z, c) {
     return z.multiplicar(z).sumar(c);
 };
@@ -143,3 +148,29 @@ var reiniciarZoomJulia = function() {
     controlador.reiniciarZoomJulia();
 };
 btnResetJulia.addEventListener("click", reiniciarZoomJulia, true);
+
+var cambiarNroIteraciones = function(txt, fn) {
+    var nroIter = prompt("Ingrese el número de iteraciones", txt.innerHTML);
+    if (nroIter === null) {
+        return;
+    }
+
+    nroIter = parseInt(nroIter);
+    if (isNaN(nroIter) || nroIter < 1) {
+        alert("Número de iteraciones inválido.");
+        return;
+    }
+
+    fn.call(controlador, nroIter);
+    txt.innerHTML = nroIter;
+};
+var cambiarIteracionesMandel = function() {
+    cambiarNroIteraciones(txtNroIterMandel, controlador.definirIteracionesMandelbrot);
+};
+txtNroIterMandel.addEventListener("click", cambiarIteracionesMandel, true);
+
+var cambiarIteracionesJulia = function() {
+    cambiarNroIteraciones(txtNroIterJulia, controlador.definirIteracionesJulia);
+};
+txtNroIterJulia.addEventListener("click", cambiarIteracionesJulia, true);
+
