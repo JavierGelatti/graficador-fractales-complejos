@@ -7,33 +7,34 @@
 </head>
 <body>
 <div id="wrapper">
-<h1>Graficador de Fractales Complejos</h1>
-<section class="mandelbrot">
-    <h2>Conjunto de Mandelbrot <span class="zoom"></span><span class="reiniciar"></span></h2>
-    <canvas width="500" height="350" id="canvasMandelbrot"></canvas>
-    <div>
-        <label for="mostrarPunto">Mostrar Punto</label>
-        <input type="checkbox" id="mostrarPunto"/>
-    </div>
-</section>
-<section class="julia">
-    <h2>Conjunto de Julia <span class="zoom"></span><span class="reiniciar"></span></h2>
-    <canvas width="500" height="350" id="canvasJulia"></canvas>
-    <div>
-        <label for="mostrarTrayectoria">Mostrar Trayectoria</label>
-        <input type="checkbox" id="mostrarTrayectoria"/>
-        <form class="complejo" id="cManual">
-            <span>c</span> =
-            <label for="re">Parte real</label>
-            <input id="re" type="number" step="any"/>
-            +
-            <label for="im">Parte imaginaria</label>
-            <input id="im" type="number" step="any"/>
-            i
-            <input type="submit" value="Graficar"/>
-        </form>
-    </div>
-</section>
+    <header><h1>Graficador de Fractales Complejos</h1></header>
+    <section class="mandelbrot">
+        <h2>Conjunto de Mandelbrot <span class="zoom"></span><span class="reiniciar"></span></h2>
+        <canvas width="500" height="350" id="canvasMandelbrot"></canvas>
+        <div>
+            <label for="mostrarPunto">Mostrar Punto</label>
+            <input type="checkbox" id="mostrarPunto"/>
+        </div>
+    </section>
+    <section class="julia">
+        <h2>Conjunto de Julia <span class="zoom"></span><span class="reiniciar"></span></h2>
+        <canvas width="500" height="350" id="canvasJulia"></canvas>
+        <div>
+            <label for="mostrarTrayectoria">Mostrar Trayectoria</label>
+            <input type="checkbox" id="mostrarTrayectoria"/>
+            <form class="complejo" id="cManual">
+                <span>c</span> =
+                <label for="re">Parte real</label>
+                <input id="re" type="number" step="any"/>
+                +
+                <label for="im">Parte imaginaria</label>
+                <input id="im" type="number" step="any"/>
+                i
+                <input type="submit" value="Graficar"/>
+            </form>
+        </div>
+    </section>
+    <footer>Creado por Facundo Javier Gelatti</footer>
 </div>
 
 <script src="js/utilidades/Canvas.js"></script>

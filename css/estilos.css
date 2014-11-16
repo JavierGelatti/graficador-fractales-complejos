@@ -1,7 +1,15 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto);
 html {
-    background: url(../img/carbon_fiber.png) dimgray;
+    background: #0e0e0e;
     font-family: 'Roboto', serif;
+    padding: 0;
+}
+body {
+    padding: 1em;
+    margin: 0;
+    background: #0e0e0e;
+    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%);
+    background-repeat: no-repeat;
 }
 #wrapper {
     background: whitesmoke;
@@ -17,6 +25,14 @@ section {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, .5);
     border-radius: 2px;
     margin-bottom: 1em;
+}
+footer {
+    text-align: center;
+    clear: both;
+    border-top: 1px solid darkgray;
+    padding-top: .9em;
+    font-size: .9em;
+    color: gray;
 }
 section.mandelbrot {
     float: left;
@@ -59,20 +75,23 @@ section > h2 > span {
     float: right;
     width: 22px;
     height: 22px;
-    background: black;
+    background: none;
     border-radius: 11px;
     margin: 0 0 0 5px;
     position: relative;
     cursor: pointer;
-    transition: transform .2s ease-in-out, background .03s ease-in;
+    transition: transform  .20s ease-in-out,
+                background .03s ease-in;
 }
 section > h2 > span:hover {
     z-index: 9;
     transform: scale(1.6);
 }
 section > h2 > span:active {
+    z-index: 9;
     background: goldenrod;
     transform: scale(1.8);
+    transition: transform .05s ease-in-out;
 }
 section > h2 > span.activado {
     z-index: 9;
@@ -131,7 +150,10 @@ section > div > input {
     right: -239px;
     margin-top: 1px;
     display: inline-block;
-    transition: right .8s ease-in-out, background .8s ease-in-out;
+    transition: right      .8s ease-in-out,
+                background .8s ease-in-out,
+                color      .8s ease-in-out;
+    color: rgba(255, 255, 255, 0);
 }
 .complejo > span {
     border-radius: 11px;
@@ -142,11 +164,25 @@ section > div > input {
     display: inline-block;
     text-align: center;
     line-height: 17px;
-    background: goldenrod;
+    background: #63A800;
     cursor: pointer;
+    transition: background .8s ease-in-out;
+    opacity: 1;
+    color: white;
+}
+.complejo * {
+    opacity: 0;
+    transition: opacity .8s ease-in-out;
+}
+.complejo.activado * {
+    opacity: 1;
 }
 .complejo.activado {
     right: 5px;
+    background: goldenrod;
+    color: rgba(255, 255, 255, 1);
+}
+.complejo.activado > span {
     background: goldenrod;
 }
 .complejo > label {
