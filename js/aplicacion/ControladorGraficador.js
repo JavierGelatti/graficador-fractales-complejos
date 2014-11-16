@@ -3,7 +3,8 @@ var aplicacion = (function(aplicacion) {
     var canvasMandelbrot,
         planoMandelbrot,
         canvasJulia,
-        planoJulia;
+        planoJulia,
+        planoVistaPJulia;
 
     var ancho,
         alto;
@@ -17,7 +18,10 @@ var aplicacion = (function(aplicacion) {
         nroIteracionesJulia,
         f;
 
+    var iteracionesVPJulia = 40;
+
     var puntoVisible = false;
+    var vistaPreviaJuliaVisible = false;
 
     aplicacion.ControladorGraficador = function(cnvsMandel, colorMandel, cnvsJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
         canvasMandelbrot = cnvsMandel;
@@ -34,6 +38,7 @@ var aplicacion = (function(aplicacion) {
 
         planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, colorMandel);
         planoJulia      = new graficador.PlanoComplejo(ancho, alto, colorJulia);
+        planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
     };
 
     Object.defineProperties(aplicacion.ControladorGraficador.prototype, {
@@ -94,6 +99,11 @@ var aplicacion = (function(aplicacion) {
             value : function(p) {
                 var c = this._getComplejoMandelbrot(p);
                 this.redibujarMandelbrot();
+                if (vistaPreviaJuliaVisible) {
+                    var conjuntoJulia = new dominio.ConjuntoJulia(f, iteracionesVPJulia, c);
+                    planoVistaPJulia.graficar(conjuntoJulia);
+                    canvasMandelbrot.dibujar(planoVistaPJulia.canvas);
+                }
                 canvasMandelbrot.mostrarUbicacion(c);
             }
         },
@@ -166,6 +176,16 @@ var aplicacion = (function(aplicacion) {
                 conjuntoJulia.nroIteraciones = n;
                 planoJulia.graficar(conjuntoJulia);
                 this.redibujarJulia();
+            }
+        },
+        mostrarVistaPreviaJulia : {
+            value : function() {
+                vistaPreviaJuliaVisible = true;
+            }
+        },
+        ocultarVistaPreviaJulia : {
+            value : function() {
+                vistaPreviaJuliaVisible = false;
             }
         }
     });

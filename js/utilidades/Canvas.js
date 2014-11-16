@@ -52,12 +52,12 @@ var utilidades = (function(utilidades) {
         },
         addEventListener : {
             value : function(evento, manejador) {
-                this.canvas.addEventListener(evento, manejador, true);
+                this.canvas.addEventListener(evento, manejador);
             }
         },
         removeEventListener : {
             value : function(evento, manejador) {
-                this.canvas.removeEventListener(evento, manejador, true);
+                this.canvas.removeEventListener(evento, manejador);
             }
         }
     });

@@ -158,6 +158,9 @@ section > div {
 section > div > input {
     vertical-align: middle;
 }
+section > div > input[type="checkbox"] {
+    margin-right: 10px;
+}
 .complejo {
     border-radius: 11px;
     position: absolute;

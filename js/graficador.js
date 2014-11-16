@@ -6,6 +6,7 @@ var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 
 var checkMostrarPunto       = document.getElementById("mostrarPunto");
 var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
+var checkMostrarVistaPJulia = document.getElementById("mostrarVistaJulia");
 
 var btnZoomMandel   = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
 var btnResetMandel  = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
@@ -20,7 +21,7 @@ var frmC  = document.getElementById("cManual");
 var btnC  = document.querySelector(".complejo > span");
 var panelC= document.querySelector(".complejo");
 
-var nroIteraciones = 100;
+var nroIteraciones = 50;
 txtNroIterMandel.innerHTML = nroIteraciones;
 txtNroIterJulia.innerHTML  = nroIteraciones;
 
@@ -82,6 +83,15 @@ var cambiarEstadoMostrarTrayectoria = function(evt) {
 };
 checkMostrarTrayectoria.addEventListener("change", cambiarEstadoMostrarTrayectoria);
 
+var cambiarEstadoMostrarVistaPreviaJulia = function(evt) {
+    if (evt.target.checked) {
+        controlador.mostrarVistaPreviaJulia();
+    } else {
+        controlador.ocultarVistaPreviaJulia();
+    }
+};
+checkMostrarVistaPJulia.addEventListener("change", cambiarEstadoMostrarVistaPreviaJulia);
+
 var seleccionarCManual = function(evt) {
     evt.preventDefault();
     if (!txtRe.checkValidity() || !txtIm.checkValidity()) {
@@ -94,12 +104,12 @@ var seleccionarCManual = function(evt) {
     controlador.seleccionarC(new dominio.NumeroComplejo(re, im));
     return false;
 };
-frmC.addEventListener("submit", seleccionarCManual, true);
+frmC.addEventListener("submit", seleccionarCManual);
 
 var cambiarVisibilidadPanelIngresoC = function() {
     panelC.classList.toggle("activado");
 };
-btnC.addEventListener("click", cambiarVisibilidadPanelIngresoC, true);
+btnC.addEventListener("click", cambiarVisibilidadPanelIngresoC);
 
 var comando = function(fn, args) {
     return function() {
@@ -107,16 +117,16 @@ var comando = function(fn, args) {
     };
 };
 var activarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
-    canvas.removeEventListener("click", fnAntes, true);
-    canvas.addEventListener("click", fnZoom, true);
+    canvas.removeEventListener("click", fnAntes);
+    canvas.addEventListener("click", fnZoom);
     canvas.classList.add("zoomActivado");
 
     btnZoom.onclick = comando(desactivarZoom, arguments);
     btnZoom.classList.add("activado");
 };
 var desactivarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
-    canvas.addEventListener("click", fnAntes, true);
-    canvas.removeEventListener("click", fnZoom, true);
+    canvas.addEventListener("click", fnAntes);
+    canvas.removeEventListener("click", fnZoom);
     canvas.classList.remove("zoomActivado");
 
     btnZoom.onclick = comando(activarZoom, arguments);
@@ -134,7 +144,7 @@ btnZoomMandel.onclick = activarZoomMandel;
 var reiniciarZoomMandel = function() {
     controlador.reiniciarZoomMandelbrot();
 };
-btnResetMandel.addEventListener("click", reiniciarZoomMandel, true);
+btnResetMandel.addEventListener("click", reiniciarZoomMandel);
 
 var zoomJulia = function(evt) {
     controlador.zoomJulia(obtenerPunto(evt));
@@ -147,7 +157,7 @@ btnZoomJulia.onclick = activarZoomJulia;
 var reiniciarZoomJulia = function() {
     controlador.reiniciarZoomJulia();
 };
-btnResetJulia.addEventListener("click", reiniciarZoomJulia, true);
+btnResetJulia.addEventListener("click", reiniciarZoomJulia);
 
 var cambiarNroIteraciones = function(txt, fn) {
     var nroIter = prompt("Ingrese el número de iteraciones", txt.innerHTML);
@@ -167,10 +177,9 @@ var cambiarNroIteraciones = function(txt, fn) {
 var cambiarIteracionesMandel = function() {
     cambiarNroIteraciones(txtNroIterMandel, controlador.definirIteracionesMandelbrot);
 };
-txtNroIterMandel.addEventListener("click", cambiarIteracionesMandel, true);
+txtNroIterMandel.addEventListener("click", cambiarIteracionesMandel);
 
 var cambiarIteracionesJulia = function() {
     cambiarNroIteraciones(txtNroIterJulia, controlador.definirIteracionesJulia);
 };
-txtNroIterJulia.addEventListener("click", cambiarIteracionesJulia, true);
-
+txtNroIterJulia.addEventListener("click", cambiarIteracionesJulia);
