@@ -6,36 +6,36 @@ html {
     padding: 0;
 }
 body {
-    padding: 1em 0;
-    margin: 0;
     background: #0e0e0e;
     background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%);
     background-repeat: no-repeat;
+    margin: 0;
+    padding: 1em 0;
 }
 #wrapper {
     background: whitesmoke;
-    padding: 1em 2em;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, .5);
     margin: 0 auto;
     overflow: hidden;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, .5);
+    padding: 1em 2em;
     width: 90%;
     max-width: 1200px;
     min-width: 550px;
 }
 section {
     background: white;
-    padding: 1.5em 2.5em;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, .5);
     border-radius: 2px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, .5);
     margin-bottom: 1em;
+    padding: 1.5em 2.5em;
 }
 footer {
-    text-align: center;
-    clear: both;
     border-top: 1px solid darkgray;
-    padding-top: .9em;
-    font-size: .9em;
+    clear: both;
     color: gray;
+    font-size: .9em;
+    padding-top: .9em;
+    text-align: center;
 }
 section.mandelbrot {
     float: left;
@@ -47,25 +47,25 @@ canvas {
     border: 3px dashed darkgray;
     border-top: 0;
     border-bottom: 0;
-    display: block;
     cursor: crosshair;
+    display: block;
 }
 canvas.zoomActivado {
     cursor: zoom-in;
 }
 h1 {
-    text-align: center;
     border-bottom: 1px solid gray;
     font-weight: normal;
     margin: 0 0 .5em;
+    text-align: center;
 }
 section > h2 {
-    margin: 0;
-    font-size: 1em;
-    color: whitesmoke;
-    padding: .3em 5px .3em 1em;
     border-top-right-radius: 10px;
     border-top-left-radius:  10px;
+    color: whitesmoke;
+    font-size: 1em;
+    margin: 0;
+    padding: .3em 5px .3em 1em;
     text-shadow: rgba(0,0,0,0.5) -1px -1px 0;
 }
 section.mandelbrot > h2 {
@@ -75,72 +75,72 @@ section.julia > h2 {
     background: midnightblue;
 }
 section > h2 > span {
-    float: right;
-    width: 22px;
-    height: 22px;
     background: none;
     border-radius: 11px;
+    cursor: pointer;
+    float: right;
+    height: 22px;
     margin: 0 0 0 5px;
     position: relative;
-    cursor: pointer;
     text-align: center;
     transition: transform  .20s ease-in-out,
                 background .03s ease-in;
+    width: 22px;
 }
 section > h2 > span:hover {
-    z-index: 9;
     transform: scale(1.6);
+    z-index: 9;
 }
 section > h2 > span:active {
-    z-index: 9;
     background: goldenrod;
     transform: scale(1.8);
     transition: transform .05s ease-in-out;
+    z-index: 9;
 }
 section > h2 > span.activado {
-    z-index: 9;
-    transform: scale(1.4);
     background: darkgoldenrod;
+    transform: scale(1.4);
+    z-index: 9;
 }
 section > h2 > span.reiniciar:before {
-    width: 10px;
-    height: 10px;
+    border: 2px dashed white;
     content: '';
     display: block;
-    border: 2px dashed white;
+    width: 10px;
+    height: 10px;
     position: absolute;
     top: 4px;
     left: 4px;
 }
 section > h2 > span.zoom:before {
-    width: 6px;
-    height: 6px;
+    border: 2px solid white;
     border-radius: 6px;
     content: '';
     display: block;
-    border: 2px solid white;
+    width: 6px;
+    height: 6px;
     position: absolute;
     top: 4px;
     left: 4px;
 }
 section > h2 > span.zoom:after {
-    width: 6px;
-    height: 2px;
     background: white;
-    content: '';
-    display: block;
     border: none;
     border-radius: 2px;
+    content: '';
+    display: block;
+    width: 6px;
+    height: 2px;
     transform: rotate(45deg);
     position: absolute;
     top: 13px;
     left: 11px;
 }
 section > h2 > span.nroIteraciones {
-    width: inherit;
-    padding: 0 6px;
     background: rgba(0,0,0,0.5);
+    padding: 0 6px;
     text-shadow: none;
+    width: inherit;
 }
 section > h2 > span.nroIteraciones:hover {
     transform: scale(1);
@@ -151,12 +151,12 @@ section > h2 > span.nroIteraciones:active {
 }
 section > div {
     background: darkslategray;
-    color: white;
-    padding: .3em 1.3em;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius:  10px;
-    position: relative;
+    color: white;
     overflow: hidden;
+    padding: .3em 1.3em;
+    position: relative;
 }
 section > div > input {
     vertical-align: middle;
@@ -166,29 +166,29 @@ section > div > input[type="checkbox"] {
 }
 .complejo {
     border-radius: 11px;
+    color: rgba(255, 255, 255, 0);
+    display: inline-block;
+    margin-top: 1px;
     position: absolute;
     right: -239px;
-    margin-top: 1px;
-    display: inline-block;
     transition: right      .8s ease-in-out,
                 background .8s ease-in-out,
                 color      .8s ease-in-out;
-    color: rgba(255, 255, 255, 0);
 }
 .complejo > span {
+    background: #63A800;
     border-radius: 11px;
-    padding: 0;
-    vertical-align: bottom;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
     width: 20px;
     height: 20px;
-    display: inline-block;
-    text-align: center;
     line-height: 17px;
-    background: #63A800;
-    cursor: pointer;
-    transition: background .8s ease-in-out;
     opacity: 1;
-    color: white;
+    padding: 0;
+    text-align: center;
+    transition: background .8s ease-in-out;
+    vertical-align: bottom;
 }
 .complejo * {
     opacity: 0;
@@ -198,9 +198,9 @@ section > div > input[type="checkbox"] {
     opacity: 1;
 }
 .complejo.activado {
-    right: 5px;
     background: goldenrod;
     color: rgba(255, 255, 255, 1);
+    right: 5px;
 }
 .complejo.activado > span {
     background: goldenrod;
@@ -215,13 +215,13 @@ section > div > input[type="checkbox"] {
     width: 60px;
 }
 .complejo > input[type='submit'] {
-    margin-left: 10px;
-    border: 0;
-    height: 21px;
     background: darkgoldenrod;
-    color: white;
+    border: 0;
     border-radius: 11px;
+    color: white;
     cursor: pointer;
+    height: 21px;
+    margin-left: 10px;
 }
 
 @media all and (max-width: 1320px) {
@@ -240,8 +240,8 @@ section > div > input[type="checkbox"] {
         text-align: left;
     }
     section.julia, section.mandelbrot {
-        float: none;
         display: inline-block;
+        float: none;
         margin: .5em auto;
     }
 }
