@@ -245,7 +245,7 @@ section > div > input[type="checkbox"] {
         margin: .5em auto;
     }
 }
-@media all and (max-width: 597px) or (max-device-width: 640px) {
+@media all and (max-width: 597px), (max-device-width: 640px) {
     body {
         padding: 0;
     }
