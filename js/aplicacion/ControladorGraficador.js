@@ -23,6 +23,8 @@ var aplicacion = (function(aplicacion) {
     var puntoVisible = false;
     var vistaPreviaJuliaVisible = false;
 
+    var graficadorJulia;
+
     aplicacion.ControladorGraficador = function(cnvsMandel, colorMandel, cnvsJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
         canvasMandelbrot = cnvsMandel;
         canvasJulia = cnvsJulia;
@@ -39,7 +41,59 @@ var aplicacion = (function(aplicacion) {
         planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, colorMandel);
         planoJulia      = new graficador.PlanoComplejo(ancho, alto, colorJulia);
         planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
+
+        graficadorJulia = new aplicacion.GraficadorJulia(canvasJulia, planoJulia);
     };
+
+    aplicacion.GraficadorJulia = function(canvas, plano) {
+        this._canvas = canvas;
+        this._plano = plano;
+    };
+    Object.defineProperties(aplicacion.GraficadorJulia.prototype, {
+        redibujar : {
+            value : function() {
+                this._canvas.limpiar();
+                this._canvas.dibujar(this._plano.canvas);
+                this._canvas.mostrarUbicacion(conjuntoJulia.c);
+            }
+        },
+        getComplejoPara : {
+            value : function(unPuntoEnElCanvas) {
+                return this._plano.getComplejo(unPuntoEnElCanvas.x, unPuntoEnElCanvas.y);
+            }
+        },
+        mostrarTrayectoria : {
+            value : function(unPuntoEnElCanvas) {
+                var c = this.getComplejoPara(unPuntoEnElCanvas);
+                var trayectoria = conjuntoJulia.getTrayectoria(c);
+                this.redibujar();
+                this._canvas.dibujar(this._plano.getCanvasTrayectoria(trayectoria));
+            }
+        },
+        hacerZoomEn : {
+            value : function(unPuntoEnElCanvas) {
+                var c = this.getComplejoPara(unPuntoEnElCanvas);
+                this._plano.hacerZoomEn(c);
+                this._plano.graficar(conjuntoJulia);
+                this.redibujar();
+            }
+        },
+        reiniciarZoom : {
+            value : function() {
+                this._plano.reiniciarZoom();
+                this._plano.graficar(conjuntoJulia);
+                this.redibujar();
+            }
+        },
+        iteraciones : {
+            set : function(n) {
+                nroIteracionesJulia = n;
+                conjuntoJulia.nroIteraciones = n;
+                this._plano.graficar(conjuntoJulia);
+                this.redibujar();
+            }
+        }
+    });
 
     Object.defineProperties(aplicacion.ControladorGraficador.prototype, {
         iniciarGraficador : {
@@ -90,9 +144,7 @@ var aplicacion = (function(aplicacion) {
         },
         redibujarJulia : {
             value : function() {
-                canvasJulia.limpiar();
-                canvasJulia.dibujar(planoJulia.canvas);
-                canvasJulia.mostrarUbicacion(conjuntoJulia.c);
+                graficadorJulia.redibujar();
             }
         },
         mostrarUbicacionPunto : {
@@ -120,16 +172,8 @@ var aplicacion = (function(aplicacion) {
             }
         },
         mostrarTrayectoria : {
-            value : function(p) {
-                var c = this._getComplejoJulia(p);
-                var trayectoria = conjuntoJulia.getTrayectoria(c);
-                this.redibujarJulia();
-                canvasJulia.dibujar(planoJulia.getCanvasTrayectoria(trayectoria));
-            }
-        },
-        _getComplejoJulia : {
-            value : function(p) {
-                return planoJulia.getComplejo(p.x, p.y);
+            value : function(unPuntoEnElCanvas) {
+                graficadorJulia.mostrarTrayectoria(unPuntoEnElCanvas);
             }
         },
         zoomMandelbrot : {
@@ -149,17 +193,12 @@ var aplicacion = (function(aplicacion) {
         },
         zoomJulia : {
             value : function(p) {
-                var c = this._getComplejoJulia(p);
-                planoJulia.hacerZoomEn(c);
-                planoJulia.graficar(conjuntoJulia);
-                this.redibujarJulia();
+                graficadorJulia.hacerZoomEn(p);
             }
         },
         reiniciarZoomJulia : {
             value : function() {
-                planoJulia.reiniciarZoom();
-                planoJulia.graficar(conjuntoJulia);
-                this.redibujarJulia();
+                graficadorJulia.reiniciarZoom();
             }
         },
         definirIteracionesMandelbrot : {
@@ -172,10 +211,7 @@ var aplicacion = (function(aplicacion) {
         },
         definirIteracionesJulia : {
             value : function(n) {
-                nroIteracionesJulia = n;
-                conjuntoJulia.nroIteraciones = n;
-                planoJulia.graficar(conjuntoJulia);
-                this.redibujarJulia();
+                graficadorJulia.iteraciones = n;
             }
         },
         mostrarVistaPreviaJulia : {
