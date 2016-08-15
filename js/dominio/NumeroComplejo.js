@@ -1,5 +1,6 @@
 var dominio = (function(dominio) {
 
+    // Funciones matemáticas
     var e = Math.E;
     function cos(x) {
         return Math.cos(x);
@@ -25,25 +26,25 @@ var dominio = (function(dominio) {
         return 1/2 * (-1/ex + ex);
     }
 
-    dominio.NumeroComplejo = function(a, b) {
-        this._a = a;
-        this._b = b;
+    dominio.NumeroComplejo = function(re, im) {
+        this._re = re;
+        this._im = im;
     };
 
     Object.defineProperties(dominio.NumeroComplejo.prototype, {
         re : {
             get : function() {
-                return this._a;
+                return this._re;
             }
         },
         im : {
             get : function() {
-                return this._b;
+                return this._im;
             }
         },
         mod2 : {
             get : function() {
-                return this._a * this._a + this._b * this._b;
+                return this._re * this._re + this._im * this._im;
             }
         },
         mod : {

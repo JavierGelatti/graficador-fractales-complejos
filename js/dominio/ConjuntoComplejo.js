@@ -3,9 +3,9 @@ var dominio = (function(dominio) {
     var radioEscape  = 2;
     var radioEscape2 = radioEscape*radioEscape;
 
-    var ConjuntoComplejo = function(fn, nroIter) {
-        this._fn = fn;
-        this._nroIteraciones = nroIter;
+    var ConjuntoComplejo = function(funcionGeneradora, numeroDeIteraciones) {
+        this._funcionGeneradora = funcionGeneradora;
+        this._nroIteraciones = numeroDeIteraciones;
         this.ox = 0;
         this.oy = 0;
     };
@@ -14,7 +14,7 @@ var dominio = (function(dominio) {
         getDatos : {
             value : function(z) {
                 var maxIter = this._nroIteraciones;
-                var f       = this._fn;
+                var f       = this._funcionGeneradora;
                 var c       = this._getC(z);
 
                 for (var i = 0; i < maxIter && z.mod2 < radioEscape2; i++) {
@@ -39,8 +39,8 @@ var dominio = (function(dominio) {
         }
     });
 
-    dominio.ConjuntoJulia = function(fn, nroIter, c) {
-        ConjuntoComplejo.call(this, fn, nroIter);
+    dominio.ConjuntoJulia = function(funcionGeneradora, numeroDeIteraciones, c) {
+        ConjuntoComplejo.call(this, funcionGeneradora, numeroDeIteraciones);
         this._c = c;
     };
 
