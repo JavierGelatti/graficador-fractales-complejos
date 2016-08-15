@@ -52,7 +52,7 @@ var seleccionarC = function(evt) {
 canvasMandelbrot.addEventListener("click", seleccionarC);
 
 var mostrarC  = function(evt) {
-    controlador.mostrarUbicacionPunto(obtenerPunto(evt));
+    controlador.cursorSobrePunto(obtenerPunto(evt));
 };
 canvasMandelbrot.addEventListener("mousemove", mostrarC);
 
