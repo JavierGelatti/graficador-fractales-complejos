@@ -35,7 +35,7 @@ var utilidades = (function(utilidades) {
         dibujarPunto : {
             value : function(x, y, color) {
                 if (color) {
-                    this._ctx.fillStyle = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")";
+                    this._ctx.fillStyle = color.rgb;
                 }
 
                 this._ctx.fillRect(x, y, 1, 1);

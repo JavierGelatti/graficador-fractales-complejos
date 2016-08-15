@@ -6,5 +6,13 @@ var utilidades = (function(utilidades) {
         this.b = b;
     };
 
+    Object.defineProperties(utilidades.Color.prototype, {
+        rgb : {
+            get : function() {
+                return "rgb(" + this.r + ", " + this.g + ", " + this.b + ")";
+            }
+        }
+    });
+
     return utilidades;
 })(utilidades || {});
