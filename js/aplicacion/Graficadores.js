@@ -62,8 +62,8 @@ var aplicacion = (function(aplicacion) {
             }
         },
         mostrarTrayectoria : {
-            value : function(unPuntoEnElCanvas) {
-                var c = this.getComplejoPara(unPuntoEnElCanvas);
+            value : function(unPuntoDelCanvas) {
+                var c = this.getComplejoPara(unPuntoDelCanvas);
                 var trayectoria = this._conjunto.getTrayectoria(c);
                 this.redibujar();
                 this._canvas.dibujar(this._plano.getCanvasTrayectoria(trayectoria));
@@ -80,6 +80,12 @@ var aplicacion = (function(aplicacion) {
                 var c = this.getComplejoPara(unPuntoDelCanvas);
                 this.redibujar();
                 this._canvas.mostrarUbicacion(c);
+            }
+        },
+        mostrarPunto : {
+            value : function(c) {
+                var p = this._plano.getPunto(c);
+                this._canvas.mostrarPunto(p);
             }
         }
     });

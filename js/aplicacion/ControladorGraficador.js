@@ -1,52 +1,43 @@
 var aplicacion = (function(aplicacion) {
 
-    var canvasMandelbrot,
-        planoMandelbrot,
-        canvasJulia,
-        planoJulia,
-        planoVistaPJulia;
-
-    var ancho,
-        alto;
-
-
-    var cSeleccionado;
     var txtRe, txtIm;
-
     var f;
-
-    var iteracionesVPJulia = 40;
-
-    var puntoVisible = false;
-    var vistaPreviaJuliaVisible = false;
+    var cSeleccionado;
+    var puntoVisibleEnMandelbrot = false;
 
     var graficadorJulia, graficadorMandelbrot;
 
-    var DecoradorVistaPreviaJulia = function() {
-
-    };
-    Object.defineProperties(DecoradorVistaPreviaJulia.prototype, {
-
-    });
-
-    aplicacion.ControladorGraficador = function(cnvsMandel, colorMandel, cnvsJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
-        canvasMandelbrot = cnvsMandel;
-        canvasJulia = cnvsJulia;
-
-        f = fn;
-
-        ancho = canvasMandelbrot.ancho;
-        alto  = canvasMandelbrot.alto;
-
+    aplicacion.ControladorGraficador = function(canvasMandelbrot, colorMandel, canvasJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
         txtRe = _txtRe;
         txtIm = _txtIm;
+        f = fn;
 
-        planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, colorMandel);
-        planoJulia      = new graficador.PlanoComplejo(ancho, alto, colorJulia);
-        planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
+        var ancho = canvasMandelbrot.ancho;
+        var alto  = canvasMandelbrot.alto;
 
+        var planoJulia      = new graficador.PlanoComplejo(ancho, alto, colorJulia);
         graficadorJulia = new aplicacion.GraficadorJulia(canvasJulia, planoJulia, nroIter);
+
+        var planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, colorMandel);
         graficadorMandelbrot = new aplicacion.GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter);
+
+        aplicacion.hacerDecorable(graficadorMandelbrot);
+        graficadorMandelbrot.activarVistaPreviaJulia = function() {
+            var planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
+            var idDecoracion = this.decorar('cursorSobrePunto', function(p, metodoOriginal) {
+                metodoOriginal(p);
+                var c = this.getComplejoPara(p);
+                var conjuntoJulia = new dominio.ConjuntoJulia(f, 40, c);
+                planoVistaPJulia.graficar(conjuntoJulia);
+                canvasMandelbrot.dibujar(planoVistaPJulia.canvas);
+            });
+
+            this.desactivarVistaPreviaJulia = function() {
+                this.eliminarDecoracion(idDecoracion);
+                this.desactivarVistaPreviaJulia = function() {};
+            };
+        };
+        graficadorMandelbrot.desactivarVistaPreviaJulia = function() {};
     };
 
 
@@ -61,20 +52,19 @@ var aplicacion = (function(aplicacion) {
         },
         seleccionarC : {
             value : function(c) {
-                if (!(c instanceof dominio.NumeroComplejo)) {
-                    c = this._getComplejoMandelbrot(c);
-                }
+                this._actualizarCSeleccionado(c);
 
-                cSeleccionado = c;
-
-                // TODO
-                graficadorJulia.conjunto = new dominio.ConjuntoJulia(f, graficadorJulia.iteraciones, c);
+                graficadorJulia.conjunto = new dominio.ConjuntoJulia(f, graficadorJulia.iteraciones, cSeleccionado);
+                txtIm.value = cSeleccionado.im;
+                txtRe.value = cSeleccionado.re;
 
                 this.redibujarMandelbrot();
-                txtIm.value = c.im;
-                txtRe.value = c.re;
-
                 this.redibujarJulia();
+            }
+        },
+        _actualizarCSeleccionado : {
+            value : function(c) {
+                cSeleccionado = !(c instanceof dominio.NumeroComplejo) ? this._getComplejoMandelbrot(c) : c;
             }
         },
         _getComplejoMandelbrot : {
@@ -90,10 +80,8 @@ var aplicacion = (function(aplicacion) {
         },
         _mostrarCSeleccionado : {
             value : function() {
-                if (puntoVisible) {
-                    var p = planoMandelbrot.getPunto(cSeleccionado);
-
-                    canvasMandelbrot.mostrarPunto(p);
+                if (puntoVisibleEnMandelbrot) {
+                    graficadorMandelbrot.mostrarPunto(cSeleccionado);
                 }
             }
         },
@@ -105,26 +93,18 @@ var aplicacion = (function(aplicacion) {
         cursorSobrePunto : {
             value : function(p) {
                 graficadorMandelbrot.cursorSobrePunto(p);
-                //this.redibujarMandelbrot();
-                //canvasMandelbrot.mostrarUbicacion(c);
                 this._mostrarCSeleccionado();
-                if (vistaPreviaJuliaVisible) {
-                    var c = graficadorMandelbrot.getComplejoPara(p);
-                    var conjuntoJulia = new dominio.ConjuntoJulia(f, iteracionesVPJulia, c);
-                    planoVistaPJulia.graficar(conjuntoJulia);
-                    canvasMandelbrot.dibujar(planoVistaPJulia.canvas);
-                }
             }
         },
         mostrarPuntoSeleccionado : {
             value : function() {
-                puntoVisible = true;
+                puntoVisibleEnMandelbrot = true;
                 this._mostrarCSeleccionado();
             }
         },
         ocultarPuntoSeleccionado : {
             value : function() {
-                puntoVisible = false;
+                puntoVisibleEnMandelbrot = false;
                 this.redibujarMandelbrot();
             }
         },
@@ -166,12 +146,12 @@ var aplicacion = (function(aplicacion) {
         },
         mostrarVistaPreviaJulia : {
             value : function() {
-                vistaPreviaJuliaVisible = true;
+                graficadorMandelbrot.activarVistaPreviaJulia();
             }
         },
         ocultarVistaPreviaJulia : {
             value : function() {
-                vistaPreviaJuliaVisible = false;
+                graficadorMandelbrot.desactivarVistaPreviaJulia();
             }
         }
     });
