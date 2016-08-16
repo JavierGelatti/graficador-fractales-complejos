@@ -4,8 +4,9 @@ var canvasJulia      = new graficador.CanvasGraficador(document.getElementById("
 var coloreadorAzul  = new coloreadores.ColoreadorAzul();
 var coloreadorRojo  = new coloreadores.ColoreadorRojo();
 
-var checkMostrarPunto       = document.getElementById("mostrarPunto");
-var checkMostrarTrayectoria = document.getElementById("mostrarTrayectoria");
+var checkMostrarPunto = document.getElementById("mostrarPunto");
+var checkMostrarTrayectoriaMandelbrot = document.getElementById("mostrarTrayectoriaMandelbrot");
+var checkMostrarTrayectoriaJulia = document.getElementById("mostrarTrayectoriaJulia");
 var checkMostrarVistaPJulia = document.getElementById("mostrarVistaJulia");
 
 var btnZoomMandel   = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
@@ -70,19 +71,28 @@ var cambiarEstadoMostrarPuntoSeleccionado = function(evt) {
 };
 checkMostrarPunto.addEventListener("change", cambiarEstadoMostrarPuntoSeleccionado);
 
-var cursorSobreJulia  = function(evt) {
+var cursorSobreJulia = function(evt) {
     controlador.cursorSobreJulia(obtenerPunto(evt));
 };
 canvasJulia.addEventListener("mousemove", cursorSobreJulia);
 
-var cambiarEstadoMostrarTrayectoria = function(evt) {
+var cambiarEstadoMostrarTrayectoriaJulia = function(evt) {
     if (evt.target.checked) {
         controlador.mostrarTrayectoriaJulia();
     } else {
         controlador.ocultarTrayectoriaJulia();
     }
 };
-checkMostrarTrayectoria.addEventListener("change", cambiarEstadoMostrarTrayectoria);
+checkMostrarTrayectoriaJulia.addEventListener("change", cambiarEstadoMostrarTrayectoriaJulia);
+
+var cambiarEstadoMostrarTrayectoriaMandelbrot = function(evt) {
+    if (evt.target.checked) {
+        controlador.mostrarTrayectoriaMandelbrot();
+    } else {
+        controlador.ocultarTrayectoriaMandelbrot();
+    }
+};
+checkMostrarTrayectoriaMandelbrot.addEventListener("change", cambiarEstadoMostrarTrayectoriaMandelbrot);
 
 var cambiarEstadoMostrarVistaPreviaJulia = function(evt) {
     if (evt.target.checked) {

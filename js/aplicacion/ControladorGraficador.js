@@ -126,6 +126,21 @@ var aplicacion = (function(aplicacion) {
                 this.redibujarJulia();
             }
         },
+        mostrarTrayectoriaMandelbrot : {
+            value : function() {
+                graficadorMandelbrot.agregarEscuchadorCursorSobrePunto(
+                    mostrarTrayectoria
+                );
+            }
+        },
+        ocultarTrayectoriaMandelbrot : {
+            value : function() {
+                graficadorMandelbrot.eliminarEscuchadorCursorSobrePunto(
+                    mostrarTrayectoria
+                );
+                this.redibujarMandelbrot();
+            }
+        },
         zoomMandelbrot : {
             value : function(p) {
                 graficadorMandelbrot.hacerZoomEn(p);
