@@ -1,0 +1,13 @@
+load:
+  - js/utilidades/Canvas.js
+  - js/utilidades/Color.js
+  - js/dominio/NumeroComplejo.js
+  - js/dominio/ConjuntoComplejo.js
+  - js/graficador/CanvasGraficador.js
+  - js/graficador/PlanoComplejo.js
+  - js/coloreadores/Coloreador.js
+  - js/aplicacion/Decorador.js
+  - js/aplicacion/Graficadores.js
+  - js/aplicacion/ControladorGraficador.js
+test:
+  - test/*.js
