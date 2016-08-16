@@ -7,6 +7,8 @@ var aplicacion = (function(aplicacion) {
 
     var graficadorJulia, graficadorMandelbrot;
 
+    var mostrarVistaPreviaJulia;
+
     aplicacion.ControladorGraficador = function(canvasMandelbrot, colorMandel, canvasJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
         txtRe = _txtRe;
         txtIm = _txtIm;
@@ -22,23 +24,13 @@ var aplicacion = (function(aplicacion) {
         planoMandelbrot.colorTrayectoria = 'red';
         graficadorMandelbrot = new aplicacion.GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter);
 
-        aplicacion.hacerDecorable(graficadorMandelbrot);
-        graficadorMandelbrot.activarVistaPreviaJulia = function() {
-            var planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
-            var idDecoracion = this.decorar('cursorSobrePunto', function(p, metodoOriginal) {
-                metodoOriginal(p);
-                var c = this.getComplejoPara(p);
-                var conjuntoJulia = new dominio.ConjuntoJulia(f, 40, c);
-                planoVistaPJulia.graficar(conjuntoJulia);
-                canvasMandelbrot.dibujar(planoVistaPJulia.canvas);
-            });
-
-            this.desactivarVistaPreviaJulia = function() {
-                this.eliminarDecoracion(idDecoracion);
-                this.desactivarVistaPreviaJulia = function() {};
-            };
+        var planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
+        mostrarVistaPreviaJulia = function(p) {
+            var c = this.getComplejoPara(p);
+            var conjuntoJulia = new dominio.ConjuntoJulia(f, 40, c);
+            planoVistaPJulia.graficar(conjuntoJulia);
+            this._canvas.dibujar(planoVistaPJulia.canvas);
         };
-        graficadorMandelbrot.desactivarVistaPreviaJulia = function() {};
     };
 
 
@@ -148,12 +140,16 @@ var aplicacion = (function(aplicacion) {
         },
         mostrarVistaPreviaJulia : {
             value : function() {
-                graficadorMandelbrot.activarVistaPreviaJulia();
+                graficadorMandelbrot.agregarEscuchadorCursorSobrePunto(
+                    mostrarVistaPreviaJulia
+                );
             }
         },
         ocultarVistaPreviaJulia : {
             value : function() {
-                graficadorMandelbrot.desactivarVistaPreviaJulia();
+                graficadorMandelbrot.eliminarEscuchadorCursorSobrePunto(
+                    mostrarVistaPreviaJulia
+                );
             }
         }
     });

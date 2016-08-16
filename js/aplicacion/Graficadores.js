@@ -4,6 +4,7 @@ var aplicacion = (function(aplicacion) {
         this._canvas = canvas;
         this._plano = plano;
         this._nroIteraciones = nroIteraciones;
+        this._escuchadoresCursorSobrePunto = [];
     };
     Object.defineProperties(Graficador.prototype, {
         getComplejoPara : {
@@ -56,6 +57,17 @@ var aplicacion = (function(aplicacion) {
                 this.redibujar();
                 this._canvas.dibujar(this._plano.getCanvasTrayectoria(trayectoria));
             }
+        },
+        agregarEscuchadorCursorSobrePunto : {
+            value: function (unEscuchador) {
+                this._escuchadoresCursorSobrePunto.push(unEscuchador.bind(this));
+            }
+        },
+        eliminarEscuchadorCursorSobrePunto : {
+            value : function(unEscuchador) {
+                this._escuchadoresCursorSobrePunto = this._escuchadoresCursorSobrePunto
+                    .filter(function(e) {return e !== unEscuchador});
+            }
         }
     });
 
@@ -80,6 +92,7 @@ var aplicacion = (function(aplicacion) {
                 var c = this.getComplejoPara(unPuntoDelCanvas);
                 this.redibujar();
                 this._canvas.mostrarUbicacion(c);
+                this._escuchadoresCursorSobrePunto.forEach(function(e) {e(unPuntoDelCanvas)});
             }
         },
         mostrarPunto : {
