@@ -15,10 +15,11 @@ var aplicacion = (function(aplicacion) {
         var ancho = canvasMandelbrot.ancho;
         var alto  = canvasMandelbrot.alto;
 
-        var planoJulia      = new graficador.PlanoComplejo(ancho, alto, colorJulia);
+        var planoJulia  = new graficador.PlanoComplejo(ancho, alto, colorJulia);
         graficadorJulia = new aplicacion.GraficadorJulia(canvasJulia, planoJulia, nroIter);
 
-        var planoMandelbrot = new graficador.PlanoComplejo(ancho, alto, colorMandel);
+        var planoMandelbrot  = new graficador.PlanoComplejo(ancho, alto, colorMandel);
+        planoMandelbrot.colorTrayectoria = 'red';
         graficadorMandelbrot = new aplicacion.GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter);
 
         aplicacion.hacerDecorable(graficadorMandelbrot);
@@ -111,6 +112,7 @@ var aplicacion = (function(aplicacion) {
         mostrarTrayectoria : {
             value : function(unPuntoEnElCanvas) {
                 graficadorJulia.mostrarTrayectoria(unPuntoEnElCanvas);
+                graficadorMandelbrot.mostrarTrayectoria(unPuntoEnElCanvas);
             }
         },
         zoomMandelbrot : {

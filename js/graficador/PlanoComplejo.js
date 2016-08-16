@@ -6,6 +6,7 @@ var graficador = (function(graficador) {
         this._capa.ancho = this._capaTrayectoria.ancho = ancho;
         this._capa.alto  = this._capaTrayectoria.alto  = alto;
         this._coloreador = coloreador;
+        this._colorTrayectoria = 'blue';
     };
 
     Object.defineProperties(graficador.PlanoComplejo.prototype, {
@@ -103,6 +104,11 @@ var graficador = (function(graficador) {
                 ctx.drawImage(this._capa.canvas, 0, 0);
             }
         },
+        colorTrayectoria : {
+            set : function(unColor) {
+                this._colorTrayectoria = unColor;
+            }
+        },
         getCanvasTrayectoria : {
             value : function(trayectoria) {
                 this._capaTrayectoria.limpiar();
@@ -110,8 +116,8 @@ var graficador = (function(graficador) {
                 var n = trayectoria.length;
 
                 ctx.lineWidth = 2;
-                ctx.lineJoin = "round";
-                ctx.strokeStyle = 'blue';
+                ctx.lineJoin = 'round';
+                ctx.strokeStyle = this._colorTrayectoria;
 
                 ctx.beginPath();
                 for (var i = 0; i < n; i++) {

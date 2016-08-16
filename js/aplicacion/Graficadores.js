@@ -48,6 +48,14 @@ var aplicacion = (function(aplicacion) {
                 this._plano.graficar(this._conjunto);
                 this.redibujar();
             }
+        },
+        mostrarTrayectoria : {
+            value : function(unPuntoDelCanvas) {
+                var c = this.getComplejoPara(unPuntoDelCanvas);
+                var trayectoria = this._conjunto.getTrayectoria(c);
+                this.redibujar();
+                this._canvas.dibujar(this._plano.getCanvasTrayectoria(trayectoria));
+            }
         }
     });
 
@@ -59,14 +67,6 @@ var aplicacion = (function(aplicacion) {
             value : function() {
                 Graficador.prototype.redibujar.call(this);
                 this._canvas.mostrarUbicacion(this._conjunto.c);
-            }
-        },
-        mostrarTrayectoria : {
-            value : function(unPuntoDelCanvas) {
-                var c = this.getComplejoPara(unPuntoDelCanvas);
-                var trayectoria = this._conjunto.getTrayectoria(c);
-                this.redibujar();
-                this._canvas.dibujar(this._plano.getCanvasTrayectoria(trayectoria));
             }
         }
     });
