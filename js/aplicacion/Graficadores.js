@@ -58,9 +58,15 @@ var aplicacion = (function(aplicacion) {
                 this._canvas.dibujar(this._plano.getCanvasTrayectoria(trayectoria));
             }
         },
+        cursorSobrePunto : {
+            value : function(unPuntoDelCanvas) {
+                var self = this;
+                this._escuchadoresCursorSobrePunto.forEach(function(e) {e(unPuntoDelCanvas, self)});
+            }
+        },
         agregarEscuchadorCursorSobrePunto : {
             value: function (unEscuchador) {
-                this._escuchadoresCursorSobrePunto.push(unEscuchador.bind(this));
+                this._escuchadoresCursorSobrePunto.push(unEscuchador);
             }
         },
         eliminarEscuchadorCursorSobrePunto : {
@@ -92,7 +98,7 @@ var aplicacion = (function(aplicacion) {
                 var c = this.getComplejoPara(unPuntoDelCanvas);
                 this.redibujar();
                 this._canvas.mostrarUbicacion(c);
-                this._escuchadoresCursorSobrePunto.forEach(function(e) {e(unPuntoDelCanvas)});
+                Graficador.prototype.cursorSobrePunto.call(this, unPuntoDelCanvas);
             }
         },
         mostrarPunto : {

@@ -7,7 +7,8 @@ var aplicacion = (function(aplicacion) {
 
     var graficadorJulia, graficadorMandelbrot;
 
-    var mostrarVistaPreviaJulia;
+    var mostrarVistaPreviaJulia,
+        mostrarTrayectoria;
 
     aplicacion.ControladorGraficador = function(canvasMandelbrot, colorMandel, canvasJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
         txtRe = _txtRe;
@@ -25,12 +26,16 @@ var aplicacion = (function(aplicacion) {
         graficadorMandelbrot = new aplicacion.GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter);
 
         var planoVistaPJulia= new graficador.PlanoComplejo(130, 100, colorJulia);
-        mostrarVistaPreviaJulia = function(p) {
-            var c = this.getComplejoPara(p);
+        mostrarVistaPreviaJulia = function(p, graficador) {
+            var c = graficador.getComplejoPara(p);
             var conjuntoJulia = new dominio.ConjuntoJulia(f, 40, c);
             planoVistaPJulia.graficar(conjuntoJulia);
-            this._canvas.dibujar(planoVistaPJulia.canvas);
+            graficador._canvas.dibujar(planoVistaPJulia.canvas);
         };
+
+        mostrarTrayectoria = function(p, graficador) {
+            graficador.mostrarTrayectoria(p);
+        }
     };
 
 
@@ -83,10 +88,15 @@ var aplicacion = (function(aplicacion) {
                 graficadorJulia.redibujar();
             }
         },
-        cursorSobrePunto : {
+        cursorSobreMandelbrot : {
             value : function(p) {
                 graficadorMandelbrot.cursorSobrePunto(p);
                 this._mostrarCSeleccionado();
+            }
+        },
+        cursorSobreJulia : {
+            value : function(p) {
+                graficadorJulia.cursorSobrePunto(p);
             }
         },
         mostrarPuntoSeleccionado : {
@@ -101,10 +111,19 @@ var aplicacion = (function(aplicacion) {
                 this.redibujarMandelbrot();
             }
         },
-        mostrarTrayectoria : {
-            value : function(unPuntoEnElCanvas) {
-                graficadorJulia.mostrarTrayectoria(unPuntoEnElCanvas);
-                graficadorMandelbrot.mostrarTrayectoria(unPuntoEnElCanvas);
+        mostrarTrayectoriaJulia : {
+            value : function() {
+                graficadorJulia.agregarEscuchadorCursorSobrePunto(
+                    mostrarTrayectoria
+                );
+            }
+        },
+        ocultarTrayectoriaJulia : {
+            value : function() {
+                graficadorJulia.eliminarEscuchadorCursorSobrePunto(
+                    mostrarTrayectoria
+                );
+                this.redibujarJulia();
             }
         },
         zoomMandelbrot : {

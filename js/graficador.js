@@ -51,10 +51,10 @@ var seleccionarC = function(evt) {
 };
 canvasMandelbrot.addEventListener("click", seleccionarC);
 
-var mostrarC  = function(evt) {
-    controlador.cursorSobrePunto(obtenerPunto(evt));
+var cursorSobreMandelbrot  = function(evt) {
+    controlador.cursorSobreMandelbrot(obtenerPunto(evt));
 };
-canvasMandelbrot.addEventListener("mousemove", mostrarC);
+canvasMandelbrot.addEventListener("mousemove", cursorSobreMandelbrot);
 
 var redibujarMandel = function() {
     controlador.redibujarMandelbrot();
@@ -70,15 +70,16 @@ var cambiarEstadoMostrarPuntoSeleccionado = function(evt) {
 };
 checkMostrarPunto.addEventListener("change", cambiarEstadoMostrarPuntoSeleccionado);
 
-var mostrarTrayectoria = function(evt) {
-    controlador.mostrarTrayectoria(obtenerPunto(evt));
+var cursorSobreJulia  = function(evt) {
+    controlador.cursorSobreJulia(obtenerPunto(evt));
 };
+canvasJulia.addEventListener("mousemove", cursorSobreJulia);
+
 var cambiarEstadoMostrarTrayectoria = function(evt) {
     if (evt.target.checked) {
-        canvasJulia.addEventListener("mousemove", mostrarTrayectoria);
+        controlador.mostrarTrayectoriaJulia();
     } else {
-        canvasJulia.removeEventListener("mousemove", mostrarTrayectoria);
-        controlador.redibujarJulia();
+        controlador.ocultarTrayectoriaJulia();
     }
 };
 checkMostrarTrayectoria.addEventListener("change", cambiarEstadoMostrarTrayectoria);
