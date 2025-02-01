@@ -27,6 +27,8 @@ txtNroIterMandel.innerHTML = nroIteraciones;
 txtNroIterJulia.innerHTML  = nroIteraciones;
 
 var f = function(z, c) {
+    // return new dominio.NumeroComplejo(1, 0).dividir(z.multiplicar(z).sen()).sumar(c);
+    // return new dominio.NumeroComplejo(1, 0).dividir(z).sumar(c);
     return z.multiplicar(z).sumar(c);
 };
 
