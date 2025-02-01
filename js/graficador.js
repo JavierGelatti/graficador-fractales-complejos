@@ -1,8 +1,13 @@
-const canvasMandelbrot = new graficador.CanvasGraficador(document.getElementById("canvasMandelbrot"));
-const canvasJulia = new graficador.CanvasGraficador(document.getElementById("canvasJulia"));
+import { NumeroComplejo } from "./dominio/NumeroComplejo";
+import { CanvasGraficador } from "./graficador/CanvasGraficador";
+import { ColoreadorAzul, ColoreadorRojo } from "./coloreadores/Coloreador";
+import { ControladorGraficador } from "./aplicacion/ControladorGraficador";
 
-const coloreadorAzul = new coloreadores.ColoreadorAzul();
-const coloreadorRojo = new coloreadores.ColoreadorRojo();
+const canvasMandelbrot = new CanvasGraficador(document.getElementById("canvasMandelbrot"));
+const canvasJulia = new CanvasGraficador(document.getElementById("canvasJulia"));
+
+const coloreadorAzul = new ColoreadorAzul();
+const coloreadorRojo = new ColoreadorRojo();
 
 const checkMostrarPunto = document.getElementById("mostrarPunto");
 const checkMostrarTrayectoriaMandelbrot = document.getElementById("mostrarTrayectoriaMandelbrot");
@@ -23,12 +28,12 @@ const btnC = document.querySelector(".complejo > span");
 const panelC = document.querySelector(".complejo");
 
 let nroIteraciones = 50;
-txtNroIterMandel.innerHTML = nroIteraciones;
-txtNroIterJulia.innerHTML = nroIteraciones;
+txtNroIterMandel.innerHTML = String(nroIteraciones);
+txtNroIterJulia.innerHTML = String(nroIteraciones);
 
 const f = (z, c) => z.multiplicar(z).sumar(c);
 
-const controlador = new aplicacion.ControladorGraficador(
+const controlador = new ControladorGraficador(
     canvasMandelbrot, coloreadorRojo,
     canvasJulia, coloreadorAzul,
     nroIteraciones, f,
@@ -114,7 +119,7 @@ const seleccionarCManual = (evt) => {
     const re = parseFloat(txtRe.value);
     const im = parseFloat(txtIm.value);
 
-    controlador.seleccionarC(new dominio.NumeroComplejo(re, im));
+    controlador.seleccionarC(new NumeroComplejo(re, im));
     return false;
 };
 frmC.addEventListener("submit", seleccionarCManual);

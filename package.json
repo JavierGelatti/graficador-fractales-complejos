@@ -1,0 +1,17 @@
+{
+  "name": "graficador-fractales",
+  "version": "1.0.0",
+  "description": "Graficador de fractales complejos",
+  "scripts": {
+    "dev": "vite --host --port 8080",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "author": "Facundo Javier Gelatti",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^6.0.11",
+    "vitest": "^3.0.4"
+  }
+}
