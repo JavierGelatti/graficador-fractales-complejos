@@ -10,26 +10,25 @@ var aplicacion = (function(aplicacion) {
 
         unObjeto.decorar = function(unMensaje, nuevoMetodo) {
             // Aplicar la decoracion
-            var metodoOriginal = this[unMensaje];
+            const metodoOriginal = this[unMensaje];
             Object.defineProperty(this, unMensaje, {
-                value : function() {
-                    [].push.call(arguments, metodoOriginal.bind(this));
-                    nuevoMetodo.apply(this, arguments);
+                value: (...args) => {
+                    nuevoMetodo.apply(this, [...args, metodoOriginal.bind(this)]);
                 },
                 configurable: true
             });
 
             // Registrar para deshacer la decoracion
-            var idEstaDecoracion = metodoOriginal;
-            this._decoraciones[idEstaDecoracion] = function() {
+            const idEstaDecoracion = metodoOriginal;
+            this._decoraciones[idEstaDecoracion] = () => {
                 Object.defineProperty(this, unMensaje, {
-                    value : metodoOriginal,
+                    value: metodoOriginal,
                     configurable: true
                 });
             };
 
             return idEstaDecoracion;
-        }
+        };
     };
 
     return aplicacion;

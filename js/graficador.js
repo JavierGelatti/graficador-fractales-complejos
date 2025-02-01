@@ -1,70 +1,66 @@
-var canvasMandelbrot = new graficador.CanvasGraficador(document.getElementById("canvasMandelbrot"));
-var canvasJulia      = new graficador.CanvasGraficador(document.getElementById("canvasJulia"));
+const canvasMandelbrot = new graficador.CanvasGraficador(document.getElementById("canvasMandelbrot"));
+const canvasJulia = new graficador.CanvasGraficador(document.getElementById("canvasJulia"));
 
-var coloreadorAzul  = new coloreadores.ColoreadorAzul();
-var coloreadorRojo  = new coloreadores.ColoreadorRojo();
+const coloreadorAzul = new coloreadores.ColoreadorAzul();
+const coloreadorRojo = new coloreadores.ColoreadorRojo();
 
-var checkMostrarPunto = document.getElementById("mostrarPunto");
-var checkMostrarTrayectoriaMandelbrot = document.getElementById("mostrarTrayectoriaMandelbrot");
-var checkMostrarTrayectoriaJulia = document.getElementById("mostrarTrayectoriaJulia");
-var checkMostrarVistaPJulia = document.getElementById("mostrarVistaJulia");
+const checkMostrarPunto = document.getElementById("mostrarPunto");
+const checkMostrarTrayectoriaMandelbrot = document.getElementById("mostrarTrayectoriaMandelbrot");
+const checkMostrarTrayectoriaJulia = document.getElementById("mostrarTrayectoriaJulia");
+const checkMostrarVistaPJulia = document.getElementById("mostrarVistaJulia");
 
-var btnZoomMandel   = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
-var btnResetMandel  = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
-var txtNroIterMandel= document.querySelector("#wrapper > section.mandelbrot > h2 > span.nroIteraciones");
-var btnZoomJulia    = document.querySelector("#wrapper > section.julia > h2 > span.zoom");
-var btnResetJulia   = document.querySelector("#wrapper > section.julia > h2 > span.reiniciar");
-var txtNroIterJulia = document.querySelector("#wrapper > section.julia > h2 > span.nroIteraciones");
+const btnZoomMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
+const btnResetMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
+const txtNroIterMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.nroIteraciones");
+const btnZoomJulia = document.querySelector("#wrapper > section.julia > h2 > span.zoom");
+const btnResetJulia = document.querySelector("#wrapper > section.julia > h2 > span.reiniciar");
+const txtNroIterJulia = document.querySelector("#wrapper > section.julia > h2 > span.nroIteraciones");
 
-var txtRe = document.getElementById("re");
-var txtIm = document.getElementById("im");
-var frmC  = document.getElementById("cManual");
-var btnC  = document.querySelector(".complejo > span");
-var panelC= document.querySelector(".complejo");
+const txtRe = document.getElementById("re");
+const txtIm = document.getElementById("im");
+const frmC = document.getElementById("cManual");
+const btnC = document.querySelector(".complejo > span");
+const panelC = document.querySelector(".complejo");
 
-var nroIteraciones = 50;
+let nroIteraciones = 50;
 txtNroIterMandel.innerHTML = nroIteraciones;
-txtNroIterJulia.innerHTML  = nroIteraciones;
+txtNroIterJulia.innerHTML = nroIteraciones;
 
-var f = function(z, c) {
-    // return new dominio.NumeroComplejo(1, 0).dividir(z.multiplicar(z).sen()).sumar(c);
-    // return new dominio.NumeroComplejo(1, 0).dividir(z).sumar(c);
-    return z.multiplicar(z).sumar(c);
-};
+const f = (z, c) => z.multiplicar(z).sumar(c);
 
-var controlador = new aplicacion.ControladorGraficador(
+const controlador = new aplicacion.ControladorGraficador(
     canvasMandelbrot, coloreadorRojo,
-    canvasJulia     , coloreadorAzul,
-    nroIteraciones  , f,
-    txtRe           , txtIm
+    canvasJulia, coloreadorAzul,
+    nroIteraciones, f,
+    txtRe, txtIm
 );
 controlador.iniciarGraficador();
 
-var obtenerPunto = function(evt) {
-    var canvas = evt.target;
-    var rect = canvas.getBoundingClientRect();
+const obtenerPunto = (evt) => {
+    const canvas = evt.target;
+    const rect = canvas.getBoundingClientRect();
     return {
-        x : evt.clientX - rect.left -3,
-        y : evt.clientY - rect.top
+        x: evt.clientX - rect.left - 3,
+        y: evt.clientY - rect.top
     };
 };
 
-var seleccionarC = function(evt) {
+const seleccionarC = (evt) => {
     controlador.seleccionarC(obtenerPunto(evt));
 };
 canvasMandelbrot.addEventListener("click", seleccionarC);
 
-var cursorSobreMandelbrot  = function(evt) {
+const cursorSobreMandelbrot = (evt) => {
     controlador.cursorSobreMandelbrot(obtenerPunto(evt));
 };
 canvasMandelbrot.addEventListener("mousemove", cursorSobreMandelbrot);
 
-var redibujarMandel = function() {
+const redibujarMandel = () => {
     controlador.redibujarMandelbrot();
 };
 canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
 
-var cambiarEstadoMostrarPuntoSeleccionado = function(evt) {
+const cambiarEstadoMostrarPuntoSeleccionado = (evt) => {
     if (evt.target.checked) {
         controlador.mostrarPuntoSeleccionado();
     } else {
@@ -73,12 +69,12 @@ var cambiarEstadoMostrarPuntoSeleccionado = function(evt) {
 };
 checkMostrarPunto.addEventListener("change", cambiarEstadoMostrarPuntoSeleccionado);
 
-var cursorSobreJulia = function(evt) {
+const cursorSobreJulia = (evt) => {
     controlador.cursorSobreJulia(obtenerPunto(evt));
 };
 canvasJulia.addEventListener("mousemove", cursorSobreJulia);
 
-var cambiarEstadoMostrarTrayectoriaJulia = function(evt) {
+const cambiarEstadoMostrarTrayectoriaJulia = (evt) => {
     if (evt.target.checked) {
         controlador.mostrarTrayectoriaJulia();
     } else {
@@ -87,7 +83,7 @@ var cambiarEstadoMostrarTrayectoriaJulia = function(evt) {
 };
 checkMostrarTrayectoriaJulia.addEventListener("change", cambiarEstadoMostrarTrayectoriaJulia);
 
-var cambiarEstadoMostrarTrayectoriaMandelbrot = function(evt) {
+const cambiarEstadoMostrarTrayectoriaMandelbrot = (evt) => {
     if (evt.target.checked) {
         controlador.mostrarTrayectoriaMandelbrot();
     } else {
@@ -96,7 +92,7 @@ var cambiarEstadoMostrarTrayectoriaMandelbrot = function(evt) {
 };
 checkMostrarTrayectoriaMandelbrot.addEventListener("change", cambiarEstadoMostrarTrayectoriaMandelbrot);
 
-var cambiarEstadoMostrarVistaPreviaJulia = function(evt) {
+const cambiarEstadoMostrarVistaPreviaJulia = (evt) => {
     if (evt.target.checked) {
         controlador.mostrarVistaPreviaJulia();
     } else {
@@ -105,31 +101,28 @@ var cambiarEstadoMostrarVistaPreviaJulia = function(evt) {
 };
 checkMostrarVistaPJulia.addEventListener("change", cambiarEstadoMostrarVistaPreviaJulia);
 
-var seleccionarCManual = function(evt) {
+const seleccionarCManual = (evt) => {
     evt.preventDefault();
     if (!txtRe.checkValidity() || !txtIm.checkValidity()) {
         alert("Por favor, ingrese solo números");
         return false;
     }
-    var re = parseFloat(txtRe.value);
-    var im = parseFloat(txtIm.value);
+    const re = parseFloat(txtRe.value);
+    const im = parseFloat(txtIm.value);
 
     controlador.seleccionarC(new dominio.NumeroComplejo(re, im));
     return false;
 };
 frmC.addEventListener("submit", seleccionarCManual);
 
-var cambiarVisibilidadPanelIngresoC = function() {
+const cambiarVisibilidadPanelIngresoC = () => {
     panelC.classList.toggle("activado");
 };
 btnC.addEventListener("click", cambiarVisibilidadPanelIngresoC);
 
-var comando = function(fn, args) {
-    return function() {
-        fn.apply(this, args);
-    };
-};
-var activarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
+const comando = (fn, args) => () => fn.apply(this, args);
+
+const activarZoom = (canvas, btnZoom, fnAntes, fnZoom) => {
     canvas.removeEventListener("click", fnAntes);
     canvas.addEventListener("click", fnZoom);
     canvas.classList.add("zoomActivado");
@@ -137,7 +130,8 @@ var activarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
     btnZoom.onclick = comando(desactivarZoom, arguments);
     btnZoom.classList.add("activado");
 };
-var desactivarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
+
+const desactivarZoom = (canvas, btnZoom, fnAntes, fnZoom) => {
     canvas.addEventListener("click", fnAntes);
     canvas.removeEventListener("click", fnZoom);
     canvas.classList.remove("zoomActivado");
@@ -146,37 +140,35 @@ var desactivarZoom = function(canvas, btnZoom, fnAntes, fnZoom) {
     btnZoom.classList.remove("activado");
 };
 
-var zoomMandel = function(evt) {
+const zoomMandel = (evt) => {
     controlador.zoomMandelbrot(obtenerPunto(evt));
 };
-var activarZoomMandel = function() {
+const activarZoomMandel = () => {
     activarZoom(canvasMandelbrot.canvas, btnZoomMandel, seleccionarC, zoomMandel);
 };
 btnZoomMandel.onclick = activarZoomMandel;
 
-var reiniciarZoomMandel = function() {
+const reiniciarZoomMandel = () => {
     controlador.reiniciarZoomMandelbrot();
 };
 btnResetMandel.addEventListener("click", reiniciarZoomMandel);
 
-var zoomJulia = function(evt) {
+const zoomJulia = (evt) => {
     controlador.zoomJulia(obtenerPunto(evt));
 };
-var activarZoomJulia = function() {
+const activarZoomJulia = () => {
     activarZoom(canvasJulia.canvas, btnZoomJulia, undefined, zoomJulia);
 };
 btnZoomJulia.onclick = activarZoomJulia;
 
-var reiniciarZoomJulia = function() {
+const reiniciarZoomJulia = () => {
     controlador.reiniciarZoomJulia();
 };
 btnResetJulia.addEventListener("click", reiniciarZoomJulia);
 
-var cambiarNroIteraciones = function(txt, fn) {
-    var nroIter = prompt("Ingrese el número de iteraciones", txt.innerHTML);
-    if (nroIter === null) {
-        return;
-    }
+const cambiarNroIteraciones = (txt, fn) => {
+    let nroIter = prompt("Ingrese el número de iteraciones", txt.innerHTML);
+    if (nroIter === null) return;
 
     nroIter = parseInt(nroIter);
     if (isNaN(nroIter) || nroIter < 1) {
@@ -187,12 +179,13 @@ var cambiarNroIteraciones = function(txt, fn) {
     fn.call(controlador, nroIter);
     txt.innerHTML = nroIter;
 };
-var cambiarIteracionesMandel = function() {
+
+const cambiarIteracionesMandel = () => {
     cambiarNroIteraciones(txtNroIterMandel, controlador.definirIteracionesMandelbrot);
 };
 txtNroIterMandel.addEventListener("click", cambiarIteracionesMandel);
 
-var cambiarIteracionesJulia = function() {
+const cambiarIteracionesJulia = () => {
     cambiarNroIteraciones(txtNroIterJulia, controlador.definirIteracionesJulia);
 };
 txtNroIterJulia.addEventListener("click", cambiarIteracionesJulia);
