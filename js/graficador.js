@@ -60,46 +60,50 @@ const redibujarMandel = () => {
 };
 canvasMandelbrot.addEventListener("mouseleave", redibujarMandel);
 
-const cambiarEstadoMostrarPuntoSeleccionado = (evt) => {
-    if (evt.target.checked) {
+const cambiarEstadoMostrarPuntoSeleccionado = () => {
+    if (checkMostrarPunto.checked) {
         controlador.mostrarPuntoSeleccionado();
     } else {
         controlador.ocultarPuntoSeleccionado();
     }
 };
 checkMostrarPunto.addEventListener("change", cambiarEstadoMostrarPuntoSeleccionado);
+cambiarEstadoMostrarPuntoSeleccionado();
 
 const cursorSobreJulia = (evt) => {
     controlador.cursorSobreJulia(obtenerPunto(evt));
 };
 canvasJulia.addEventListener("mousemove", cursorSobreJulia);
 
-const cambiarEstadoMostrarTrayectoriaJulia = (evt) => {
-    if (evt.target.checked) {
+const cambiarEstadoMostrarTrayectoriaJulia = () => {
+    if (checkMostrarTrayectoriaJulia.checked) {
         controlador.mostrarTrayectoriaJulia();
     } else {
         controlador.ocultarTrayectoriaJulia();
     }
 };
 checkMostrarTrayectoriaJulia.addEventListener("change", cambiarEstadoMostrarTrayectoriaJulia);
+cambiarEstadoMostrarTrayectoriaJulia();
 
-const cambiarEstadoMostrarTrayectoriaMandelbrot = (evt) => {
-    if (evt.target.checked) {
+const cambiarEstadoMostrarTrayectoriaMandelbrot = () => {
+    if (checkMostrarTrayectoriaMandelbrot.checked) {
         controlador.mostrarTrayectoriaMandelbrot();
     } else {
         controlador.ocultarTrayectoriaMandelbrot();
     }
 };
 checkMostrarTrayectoriaMandelbrot.addEventListener("change", cambiarEstadoMostrarTrayectoriaMandelbrot);
+cambiarEstadoMostrarTrayectoriaMandelbrot();
 
-const cambiarEstadoMostrarVistaPreviaJulia = (evt) => {
-    if (evt.target.checked) {
+const cambiarEstadoMostrarVistaPreviaJulia = () => {
+    if (checkMostrarVistaPJulia.checked) {
         controlador.mostrarVistaPreviaJulia();
     } else {
         controlador.ocultarVistaPreviaJulia();
     }
 };
 checkMostrarVistaPJulia.addEventListener("change", cambiarEstadoMostrarVistaPreviaJulia);
+cambiarEstadoMostrarVistaPreviaJulia();
 
 const seleccionarCManual = (evt) => {
     evt.preventDefault();
