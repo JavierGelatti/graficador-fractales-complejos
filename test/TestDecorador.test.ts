@@ -2,19 +2,21 @@ import {describe, test, expect, beforeEach} from "vitest";
 import { hacerDecorable } from "../js/aplicacion/Decorador";
 
 describe("TestDecorador", () => {
+    let llamada = "";
+
     class Objeto {
+        public valor: string;
+
         constructor() {
             this.valor = 'valor original';
         }
-        hacerAlgo(texto) {
+        hacerAlgo(texto: string) {
             llamada += "original(" + texto + ").";
         }
-        hacerOtraCosa(texto) {
+        hacerOtraCosa(texto: string) {
             this.valor = texto;
         }
     }
-
-    let llamada;
 
     beforeEach(() => {
         llamada = "";
@@ -25,7 +27,7 @@ describe("TestDecorador", () => {
         hacerDecorable(objeto);
         objeto.hacerAlgo('A');
 
-        objeto.decorar('hacerAlgo', function(texto) {
+        objeto.decorar('hacerAlgo', function(_, texto) {
             llamada += "modificado(" + texto + ").";
         });
         objeto.hacerAlgo('B');
@@ -36,7 +38,7 @@ describe("TestDecorador", () => {
     test("al decorar se enlaza al objeto original", () => {
         const objeto = new Objeto();
         hacerDecorable(objeto);
-        objeto.decorar('hacerAlgo', function(texto) {
+        objeto.decorar('hacerAlgo', function(_, texto) {
             this.hacerOtraCosa(texto);
         });
         objeto.hacerAlgo('B');
@@ -47,7 +49,7 @@ describe("TestDecorador", () => {
     test("se puede llamar al metodo original", () => {
         const objeto = new Objeto();
         hacerDecorable(objeto);
-        objeto.decorar('hacerAlgo', function(texto, metodoOriginal) {
+        objeto.decorar('hacerAlgo', function(metodoOriginal, texto) {
             metodoOriginal(texto);
         });
         objeto.hacerAlgo('B');
@@ -58,7 +60,7 @@ describe("TestDecorador", () => {
     test("el this esta bien en el metodo original", () => {
         const objeto = new Objeto();
         hacerDecorable(objeto);
-        objeto.decorar('hacerOtraCosa', function(texto, metodoOriginal) {
+        objeto.decorar('hacerOtraCosa', function(metodoOriginal, texto) {
             metodoOriginal(texto);
         });
         objeto.hacerOtraCosa('B');
@@ -77,7 +79,7 @@ describe("TestDecorador", () => {
         });
 
         objeto.eliminarDecoracion(idDeco);
-        objeto.hacerAlgo();
+        objeto.hacerAlgo('C');
 
         expect(llamada).toEqual('A');
     });

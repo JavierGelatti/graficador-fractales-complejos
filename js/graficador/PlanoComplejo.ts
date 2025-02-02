@@ -1,21 +1,32 @@
 import { Canvas } from "../utilidades/Canvas";
 import { NumeroComplejo } from "../dominio/NumeroComplejo";
+import {Coloreador, Datos} from "../coloreadores/Coloreador";
+import {ConjuntoComplejo} from "../dominio/ConjuntoComplejo";
 
 export class PlanoComplejo {
-    constructor(ancho, alto, coloreador) {
+    private _capa: Canvas;
+    private _capaTrayectoria: Canvas;
+    private _coloreador: Coloreador;
+    private _colorTrayectoria: string;
+    private _r_min: number | undefined;
+    private _r_max: number;
+    private _i_min: number;
+    private _i_max: any;
+
+    constructor(ancho: number, alto: number, coloreador: Coloreador) {
         this._capa = new Canvas(document.createElement("canvas"));
         this._capaTrayectoria = new Canvas(document.createElement("canvas"));
         this._capa.ancho = this._capaTrayectoria.ancho = ancho;
         this._capa.alto = this._capaTrayectoria.alto = alto;
         this._coloreador = coloreador;
-        this._colorTrayectoria = 'blue';
+        this._colorTrayectoria = "blue";
     }
 
     get canvas() {
         return this._capa.canvas;
     }
 
-    _definirDimensiones(conjuntoComplejo) {
+    _definirDimensiones(conjuntoComplejo: ConjuntoComplejo) {
         const i_min = conjuntoComplejo.oy - 1.5;
         const i_max = conjuntoComplejo.oy + 1.5;
 
@@ -36,12 +47,12 @@ export class PlanoComplejo {
         this._capa.limpiar();
     }
 
-    _dibujarPunto(x, y, datos) {
+    _dibujarPunto(x: number, y: number, datos: Datos) {
         const color = this._coloreador?.getColor(datos);
         this._capa.dibujarPunto(x, y, color);
     }
 
-    graficar(conjuntoComplejo) {
+    graficar(conjuntoComplejo: ConjuntoComplejo) {
         const alto = this._capa.alto;
         const ancho = this._capa.ancho;
 
@@ -60,37 +71,37 @@ export class PlanoComplejo {
         }
     }
 
-    _getIm(y) {
+    _getIm(y: number) {
         return this._i_max + (this._i_min - this._i_max) * y / this._capa.alto;
     }
 
-    _getRe(x) {
+    _getRe(x: number) {
         return this._r_min + (this._r_max - this._r_min) * x / this._capa.ancho;
     }
 
-    getComplejo(x, y) {
+    getComplejo(x: number, y: number) {
         const c_r = this._getRe(x);
         const c_i = this._getIm(y);
         return new NumeroComplejo(c_r, c_i);
     }
 
-    getPunto(c) {
+    getPunto(c: NumeroComplejo) {
         const x = (c.re - this._r_min) / (this._r_max - this._r_min) * this._capa.ancho;
         const y = (c.im - this._i_max) / (this._i_min - this._i_max) * this._capa.alto;
         return { x, y };
     }
 
-    dibujarEn(ctx) {
+    dibujarEn(ctx: CanvasRenderingContext2D) {
         ctx.drawImage(this._capa.canvas, 0, 0);
     }
 
-    set colorTrayectoria(unColor) {
+    set colorTrayectoria(unColor: string) {
         this._colorTrayectoria = unColor;
     }
 
-    getCanvasTrayectoria(trayectoria) {
+    getCanvasTrayectoria(trayectoria: NumeroComplejo[]) {
         this._capaTrayectoria.limpiar();
-        const ctx = this._capaTrayectoria.canvas.getContext("2d");
+        const ctx = this._capaTrayectoria.canvas.getContext("2d")!;
         const n = trayectoria.length;
 
         ctx.lineWidth = 2;
@@ -107,7 +118,7 @@ export class PlanoComplejo {
         return this._capaTrayectoria.canvas;
     }
 
-    hacerZoomEn(centro) {
+    hacerZoomEn(centro: NumeroComplejo) {
         const factorZoom = 4;
 
         const ancho = this._r_max - this._r_min;

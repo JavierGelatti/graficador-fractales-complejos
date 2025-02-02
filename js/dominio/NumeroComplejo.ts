@@ -4,18 +4,21 @@ const cos = Math.cos;
 const sen = Math.sin;
 const sqrt = Math.sqrt;
 const pow = Math.pow;
-const exp = x => pow(e, x);
-const cosh = x => {
+const exp = (x: number) => pow(e, x);
+const cosh = (x: number) => {
     const ex = exp(x);
     return 1/2 * (1/ex + ex);
 };
-const senh = x => {
+const senh = (x: number) => {
     const ex = exp(x);
     return 1/2 * (-1/ex + ex);
 };
 
 export class NumeroComplejo {
-    constructor(re, im) {
+    private readonly _re: number;
+    private readonly _im: number;
+
+    constructor(re: number, im: number) {
         this._re = re;
         this._im = im;
     }
@@ -36,22 +39,22 @@ export class NumeroComplejo {
         return sqrt(this.mod2);
     }
 
-    sumar(c2) {
+    sumar(c2: NumeroComplejo) {
         return new NumeroComplejo(this.re + c2.re, this.im + c2.im);
     }
 
-    restar(c2) {
+    restar(c2: NumeroComplejo) {
         return new NumeroComplejo(this.re - c2.re, this.im - c2.im);
     }
 
-    multiplicar(c2) {
+    multiplicar(c2: NumeroComplejo) {
         return new NumeroComplejo(
             this.re * c2.re - this.im * c2.im,
             this.re * c2.im + this.im * c2.re
         );
     }
 
-    dividir(c2) {
+    dividir(c2: NumeroComplejo) {
         const sc = pow(c2.re, 2) + pow(c2.im, 2);
         return new NumeroComplejo(
             (this.re * c2.re + this.im * c2.im) / sc,

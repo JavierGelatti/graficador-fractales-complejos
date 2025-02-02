@@ -1,7 +1,12 @@
+import {Color} from "./Color.ts";
+
 export class Canvas {
-    constructor(canvas) {
+    private readonly _canvas: HTMLCanvasElement;
+    protected _ctx: CanvasRenderingContext2D;
+
+    constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
-        this._ctx = canvas.getContext("2d");
+        this._ctx = canvas.getContext("2d")!;
     }
 
     get alto() {
@@ -28,22 +33,28 @@ export class Canvas {
         this._ctx.clearRect(0, 0, this.ancho, this.alto);
     }
 
-    dibujarPunto(x, y, color) {
+    dibujarPunto(x: number, y: number, color: Color) {
         if (color) {
             this._ctx.fillStyle = color.rgb;
         }
         this._ctx.fillRect(x, y, 1, 1);
     }
 
-    dibujar(imagen) {
+    dibujar(imagen: CanvasImageSource) {
         this._ctx.drawImage(imagen, 0, 0);
     }
 
-    addEventListener(evento, manejador) {
+    addEventListener<K extends keyof HTMLElementEventMap>(
+        evento: K,
+        manejador: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => void
+    ) {
         this.canvas.addEventListener(evento, manejador);
     }
 
-    removeEventListener(evento, manejador) {
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+        evento: K,
+        manejador: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => void
+    ) {
         this.canvas.removeEventListener(evento, manejador);
     }
 }

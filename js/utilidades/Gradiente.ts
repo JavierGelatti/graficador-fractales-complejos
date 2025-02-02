@@ -1,15 +1,20 @@
 import { Color } from "./Color";
 
 class ColorGradiente {
-    constructor(color, porcentaje) {
+    color: Color;
+    porcentaje: number;
+
+    constructor(color: Color, porcentaje: number) {
         this.color = color;
         this.porcentaje = porcentaje;
     }
 }
 
-const compararColoresGradiente = (a, b) => a.porcentaje - b.porcentaje;
+const compararColoresGradiente = (a: ColorGradiente, b: ColorGradiente) => a.porcentaje - b.porcentaje;
 
-const interpolarColores = (colorFinal, colorInicio, razonColor) => {
+const interpolarColores = (
+    colorFinal: Color, colorInicio: Color, razonColor: number
+) => {
     const deltaR = colorFinal.r - colorInicio.r;
     const deltaG = colorFinal.g - colorInicio.g;
     const deltaB = colorFinal.b - colorInicio.b;
@@ -21,7 +26,9 @@ const interpolarColores = (colorFinal, colorInicio, razonColor) => {
     return new Color(r, g, b);
 };
 
-const buscarColor = (colores, iMin, iMax, porcentaje) => {
+const buscarColor = (
+    colores: ColorGradiente[], iMin: number, iMax: number, porcentaje: number
+) => {
     if (iMin > iMax) {
         if (iMax === -1) return colores[iMin].color;
         if (iMin === colores.length) return colores[iMax].color;
@@ -45,19 +52,21 @@ const buscarColor = (colores, iMin, iMax, porcentaje) => {
 };
 
 export class Gradiente {
-    constructor(cInicio, cFin) {
+    private readonly _colores: ColorGradiente[];
+
+    constructor(cInicio: Color, cFin: Color) {
         this._colores = [
             new ColorGradiente(cInicio, 0),
             new ColorGradiente(cFin, 100)
         ];
     }
 
-    agregarColor(color, porcentaje) {
+    agregarColor(color: Color, porcentaje: number) {
         this._colores.push(new ColorGradiente(color, porcentaje));
         this._colores.sort(compararColoresGradiente);
     }
 
-    tomarColor(porcentaje) {
+    tomarColor(porcentaje: number) {
         return buscarColor(this._colores, 0, this._colores.length - 1, porcentaje);
     }
 }

@@ -1,37 +1,38 @@
-import { NumeroComplejo } from "./dominio/NumeroComplejo";
-import { CanvasGraficador } from "./graficador/CanvasGraficador";
-import { ColoreadorAzul, ColoreadorRojo } from "./coloreadores/Coloreador";
-import { ControladorGraficador } from "./aplicacion/ControladorGraficador";
+import {NumeroComplejo} from "./dominio/NumeroComplejo";
+import {CanvasGraficador} from "./graficador/CanvasGraficador";
+import {ColoreadorAzul, ColoreadorRojo} from "./coloreadores/Coloreador";
+import {ControladorGraficador} from "./aplicacion/ControladorGraficador";
+import {Punto} from "./dominio/Punto.ts";
 
-const canvasMandelbrot = new CanvasGraficador(document.getElementById("canvasMandelbrot"));
-const canvasJulia = new CanvasGraficador(document.getElementById("canvasJulia"));
+const canvasMandelbrot = new CanvasGraficador(document.getElementById("canvasMandelbrot") as HTMLCanvasElement);
+const canvasJulia = new CanvasGraficador(document.getElementById("canvasJulia") as HTMLCanvasElement);
 
 const coloreadorAzul = new ColoreadorAzul();
 const coloreadorRojo = new ColoreadorRojo();
 
-const checkMostrarPunto = document.getElementById("mostrarPunto");
-const checkMostrarTrayectoriaMandelbrot = document.getElementById("mostrarTrayectoriaMandelbrot");
-const checkMostrarTrayectoriaJulia = document.getElementById("mostrarTrayectoriaJulia");
-const checkMostrarVistaPJulia = document.getElementById("mostrarVistaJulia");
+const checkMostrarPunto = document.getElementById("mostrarPunto") as HTMLInputElement;
+const checkMostrarTrayectoriaMandelbrot = document.getElementById("mostrarTrayectoriaMandelbrot") as HTMLInputElement;
+const checkMostrarTrayectoriaJulia = document.getElementById("mostrarTrayectoriaJulia") as HTMLInputElement;
+const checkMostrarVistaPJulia = document.getElementById("mostrarVistaJulia") as HTMLInputElement;
 
-const btnZoomMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.zoom");
-const btnResetMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.reiniciar");
-const txtNroIterMandel = document.querySelector("#wrapper > section.mandelbrot > h2 > span.nroIteraciones");
-const btnZoomJulia = document.querySelector("#wrapper > section.julia > h2 > span.zoom");
-const btnResetJulia = document.querySelector("#wrapper > section.julia > h2 > span.reiniciar");
-const txtNroIterJulia = document.querySelector("#wrapper > section.julia > h2 > span.nroIteraciones");
+const btnZoomMandel = document.querySelector<HTMLElement>("#wrapper > section.mandelbrot > h2 > span.zoom")!;
+const btnResetMandel = document.querySelector<HTMLElement>("#wrapper > section.mandelbrot > h2 > span.reiniciar")!;
+const txtNroIterMandel = document.querySelector<HTMLElement>("#wrapper > section.mandelbrot > h2 > span.nroIteraciones")!;
+const btnZoomJulia = document.querySelector<HTMLElement>("#wrapper > section.julia > h2 > span.zoom")!;
+const btnResetJulia = document.querySelector<HTMLElement>("#wrapper > section.julia > h2 > span.reiniciar")!;
+const txtNroIterJulia = document.querySelector<HTMLElement>("#wrapper > section.julia > h2 > span.nroIteraciones")!;
 
-const txtRe = document.getElementById("re");
-const txtIm = document.getElementById("im");
-const frmC = document.getElementById("cManual");
-const btnC = document.querySelector(".complejo > span");
-const panelC = document.querySelector(".complejo");
+const txtRe = document.getElementById("re") as HTMLInputElement;
+const txtIm = document.getElementById("im") as HTMLInputElement;
+const frmC = document.getElementById("cManual")!;
+const btnC = document.querySelector(".complejo > span")!;
+const panelC = document.querySelector(".complejo")!;
 
 let nroIteraciones = 50;
 txtNroIterMandel.innerHTML = String(nroIteraciones);
 txtNroIterJulia.innerHTML = String(nroIteraciones);
 
-const f = (z, c) => z.multiplicar(z).sumar(c);
+const f = (z: NumeroComplejo, c: NumeroComplejo) => z.multiplicar(z).sumar(c);
 
 const controlador = new ControladorGraficador(
     canvasMandelbrot, coloreadorRojo,
@@ -41,8 +42,8 @@ const controlador = new ControladorGraficador(
 );
 controlador.iniciarGraficador();
 
-const obtenerPunto = (evt) => {
-    const canvas = evt.target;
+const obtenerPunto: (evt: MouseEvent) => Punto = evt => {
+    const canvas = evt.target as HTMLCanvasElement;
     const rect = canvas.getBoundingClientRect();
     return {
         x: evt.clientX - rect.left - 3,
@@ -50,12 +51,12 @@ const obtenerPunto = (evt) => {
     };
 };
 
-const seleccionarC = (evt) => {
+const seleccionarC = (evt: MouseEvent) => {
     controlador.seleccionarC(obtenerPunto(evt));
 };
 canvasMandelbrot.addEventListener("click", seleccionarC);
 
-const cursorSobreMandelbrot = (evt) => {
+const cursorSobreMandelbrot = (evt: MouseEvent) => {
     controlador.cursorSobreMandelbrot(obtenerPunto(evt));
 };
 canvasMandelbrot.addEventListener("mousemove", cursorSobreMandelbrot);
@@ -75,7 +76,7 @@ const cambiarEstadoMostrarPuntoSeleccionado = () => {
 checkMostrarPunto.addEventListener("change", cambiarEstadoMostrarPuntoSeleccionado);
 cambiarEstadoMostrarPuntoSeleccionado();
 
-const cursorSobreJulia = (evt) => {
+const cursorSobreJulia = (evt: MouseEvent) => {
     controlador.cursorSobreJulia(obtenerPunto(evt));
 };
 canvasJulia.addEventListener("mousemove", cursorSobreJulia);
@@ -110,7 +111,7 @@ const cambiarEstadoMostrarVistaPreviaJulia = () => {
 checkMostrarVistaPJulia.addEventListener("change", cambiarEstadoMostrarVistaPreviaJulia);
 cambiarEstadoMostrarVistaPreviaJulia();
 
-const seleccionarCManual = (evt) => {
+const seleccionarCManual = (evt: SubmitEvent) => {
     evt.preventDefault();
     if (!txtRe.checkValidity() || !txtIm.checkValidity()) {
         alert("Por favor, ingrese solo números");
@@ -129,27 +130,29 @@ const cambiarVisibilidadPanelIngresoC = () => {
 };
 btnC.addEventListener("click", cambiarVisibilidadPanelIngresoC);
 
-const comando = (fn, args) => () => fn.apply(this, args);
-
-const activarZoom = (canvas, btnZoom, fnAntes, fnZoom) => {
-    canvas.removeEventListener("click", fnAntes);
+const activarZoom = (
+    canvas: HTMLCanvasElement, btnZoom: HTMLElement, fnAntes: ((evt: MouseEvent) => void) | undefined, fnZoom: (evt: MouseEvent) => void
+) => {
+    if (fnAntes !== undefined) canvas.removeEventListener("click", fnAntes);
     canvas.addEventListener("click", fnZoom);
     canvas.classList.add("zoomActivado");
 
-    btnZoom.onclick = comando(desactivarZoom, arguments);
+    btnZoom.onclick = () => desactivarZoom.apply(this, [canvas, btnZoom, fnAntes, fnZoom]);
     btnZoom.classList.add("activado");
 };
 
-const desactivarZoom = (canvas, btnZoom, fnAntes, fnZoom) => {
-    canvas.addEventListener("click", fnAntes);
+const desactivarZoom = (
+    canvas: HTMLCanvasElement, btnZoom: HTMLElement, fnAntes: ((evt: MouseEvent) => void) | undefined, fnZoom: (evt: MouseEvent) => void
+) => {
+    if (fnAntes !== undefined) canvas.addEventListener("click", fnAntes);
     canvas.removeEventListener("click", fnZoom);
     canvas.classList.remove("zoomActivado");
 
-    btnZoom.onclick = comando(activarZoom, arguments);
+    btnZoom.onclick = () => activarZoom.apply(this, [canvas, btnZoom, fnAntes, fnZoom]);
     btnZoom.classList.remove("activado");
 };
 
-const zoomMandel = (evt) => {
+const zoomMandel = (evt: MouseEvent) => {
     controlador.zoomMandelbrot(obtenerPunto(evt));
 };
 const activarZoomMandel = () => {
@@ -162,7 +165,7 @@ const reiniciarZoomMandel = () => {
 };
 btnResetMandel.addEventListener("click", reiniciarZoomMandel);
 
-const zoomJulia = (evt) => {
+const zoomJulia = (evt: MouseEvent) => {
     controlador.zoomJulia(obtenerPunto(evt));
 };
 const activarZoomJulia = () => {
@@ -175,8 +178,8 @@ const reiniciarZoomJulia = () => {
 };
 btnResetJulia.addEventListener("click", reiniciarZoomJulia);
 
-const cambiarNroIteraciones = (txt, fn) => {
-    let nroIter = prompt("Ingrese el número de iteraciones", txt.innerHTML);
+const cambiarNroIteraciones = (txt: HTMLElement, fn: (this: ControladorGraficador, nroIter: number) => void) => {
+    let nroIter: string | number | null = prompt("Ingrese el número de iteraciones", txt.innerHTML);
     if (nroIter === null) return;
 
     nroIter = parseInt(nroIter);
@@ -186,7 +189,7 @@ const cambiarNroIteraciones = (txt, fn) => {
     }
 
     fn.call(controlador, nroIter);
-    txt.innerHTML = nroIter;
+    txt.innerHTML = String(nroIter);
 };
 
 const cambiarIteracionesMandel = () => {

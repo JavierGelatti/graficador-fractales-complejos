@@ -1,15 +1,24 @@
+import {NumeroComplejo} from "./NumeroComplejo.ts";
+
+type FuncionGeneradora = (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo;
+
 const radioEscape = 2;
 const radioEscape2 = radioEscape * radioEscape;
 
-class ConjuntoComplejo {
-    constructor(funcionGeneradora, numeroDeIteraciones) {
+export abstract class ConjuntoComplejo {
+    private readonly _funcionGeneradora: FuncionGeneradora;
+    private _nroIteraciones: number;
+    ox: number;
+    oy: number;
+
+    constructor(funcionGeneradora: FuncionGeneradora, numeroDeIteraciones: number, ox = 0, oy = 0) {
         this._funcionGeneradora = funcionGeneradora;
         this._nroIteraciones = numeroDeIteraciones;
-        this.ox = 0;
-        this.oy = 0;
+        this.ox = ox;
+        this.oy = oy;
     }
 
-    getDatos(z) {
+    getDatos(z: NumeroComplejo) {
         const maxIter = this._nroIteraciones;
         const f = this._funcionGeneradora;
         const c = this._getC(z);
@@ -31,11 +40,11 @@ class ConjuntoComplejo {
         return this._nroIteraciones;
     }
 
-    set nroIteraciones(n) {
+    set nroIteraciones(n: number) {
         this._nroIteraciones = n;
     }
 
-    getTrayectoria(z) {
+    getTrayectoria(z: NumeroComplejo) {
         const trayectoria = [];
         const maxIter = this._nroIteraciones;
 
@@ -47,13 +56,13 @@ class ConjuntoComplejo {
         return trayectoria;
     }
 
-    _getC(z) {
-        throw new Error("Method '_getC' must be implemented by subclasses.");
-    }
+    abstract _getC(z: NumeroComplejo): NumeroComplejo;
 }
 
 export class ConjuntoJulia extends ConjuntoComplejo {
-    constructor(funcionGeneradora, numeroDeIteraciones, c) {
+    private readonly _c: NumeroComplejo;
+
+    constructor(funcionGeneradora: FuncionGeneradora, numeroDeIteraciones: number, c: NumeroComplejo) {
         super(funcionGeneradora, numeroDeIteraciones);
         this._c = c;
     }
@@ -68,12 +77,11 @@ export class ConjuntoJulia extends ConjuntoComplejo {
 }
 
 export class ConjuntoMandelbrot extends ConjuntoComplejo {
-    constructor(fn, nroIter) {
-        super(fn, nroIter);
-        this.ox = -0.5;
+    constructor(fn: FuncionGeneradora, nroIter: number) {
+        super(fn, nroIter, -0.5);
     }
 
-    _getC(z) {
+    _getC(z: NumeroComplejo) {
         return z;
     }
 }

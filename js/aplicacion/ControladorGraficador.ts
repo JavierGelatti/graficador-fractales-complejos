@@ -1,19 +1,32 @@
 import { PlanoComplejo } from "../graficador/PlanoComplejo";
-import { GraficadorJulia, GraficadorMandelbrot } from "./Graficadores";
+import {Graficador, GraficadorJulia, GraficadorMandelbrot} from "./Graficadores";
 import { ConjuntoJulia, ConjuntoMandelbrot } from "../dominio/ConjuntoComplejo";
 import { NumeroComplejo } from "../dominio/NumeroComplejo";
+import {Coloreador} from "../coloreadores/Coloreador";
+import { CanvasGraficador } from "../graficador/CanvasGraficador";
+import { Punto } from "../dominio/Punto";
 
-let txtRe, txtIm;
-let f;
-let cSeleccionado;
+let txtRe: HTMLInputElement, txtIm: HTMLInputElement;
+let f: (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo;
+let cSeleccionado: NumeroComplejo;
 let puntoVisibleEnMandelbrot = false;
 
-let graficadorJulia, graficadorMandelbrot;
+let graficadorJulia: GraficadorJulia, graficadorMandelbrot: GraficadorMandelbrot;
 
-let mostrarVistaPreviaJulia, mostrarTrayectoria;
+let mostrarVistaPreviaJulia: (p: Punto, graficador: Graficador) => void;
+let mostrarTrayectoria: (p: Punto, graficador: Graficador) => void;
 
 export class ControladorGraficador {
-    constructor(canvasMandelbrot, colorMandel, canvasJulia, colorJulia, nroIter, fn, _txtRe, _txtIm) {
+    constructor(
+        canvasMandelbrot: CanvasGraficador,
+        colorMandel: Coloreador,
+        canvasJulia: CanvasGraficador,
+        colorJulia: Coloreador,
+        nroIter: number,
+        fn: (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo,
+        _txtRe: HTMLInputElement,
+        _txtIm: HTMLInputElement,
+    ) {
         txtRe = _txtRe;
         txtIm = _txtIm;
         f = fn;
@@ -25,11 +38,11 @@ export class ControladorGraficador {
         graficadorJulia = new GraficadorJulia(canvasJulia, planoJulia, nroIter);
 
         const planoMandelbrot = new PlanoComplejo(ancho, alto, colorMandel);
-        planoMandelbrot.colorTrayectoria = 'red';
+        planoMandelbrot.colorTrayectoria = "red";
         graficadorMandelbrot = new GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter);
 
         const planoVistaPJulia = new PlanoComplejo(130, 100, colorJulia);
-        mostrarVistaPreviaJulia = (p, graficador) => {
+        mostrarVistaPreviaJulia = (p, graficador: Graficador) => {
             const c = graficador.getComplejoPara(p);
             const conjuntoJulia = new ConjuntoJulia(f, 40, c);
             planoVistaPJulia.graficar(conjuntoJulia);
@@ -48,22 +61,22 @@ export class ControladorGraficador {
         this.seleccionarC(o);
     }
 
-    seleccionarC(c) {
+    seleccionarC(c: NumeroComplejo | Punto) {
         this._actualizarCSeleccionado(c);
 
         graficadorJulia.conjunto = new ConjuntoJulia(f, graficadorJulia.iteraciones, cSeleccionado);
-        txtIm.value = cSeleccionado.im;
-        txtRe.value = cSeleccionado.re;
+        txtIm.value = String(cSeleccionado.im);
+        txtRe.value = String(cSeleccionado.re);
 
         this.redibujarMandelbrot();
         this.redibujarJulia();
     }
 
-    _actualizarCSeleccionado(c) {
+    _actualizarCSeleccionado(c: NumeroComplejo | Punto) {
         cSeleccionado = !(c instanceof NumeroComplejo) ? this._getComplejoMandelbrot(c) : c;
     }
 
-    _getComplejoMandelbrot(p) {
+    _getComplejoMandelbrot(p: Punto) {
         return graficadorMandelbrot.getComplejoPara(p);
     }
 
@@ -82,12 +95,12 @@ export class ControladorGraficador {
         graficadorJulia.redibujar();
     }
 
-    cursorSobreMandelbrot(p) {
+    cursorSobreMandelbrot(p: Punto) {
         graficadorMandelbrot.cursorSobrePunto(p);
         this._mostrarCSeleccionado();
     }
 
-    cursorSobreJulia(p) {
+    cursorSobreJulia(p: Punto) {
         graficadorJulia.cursorSobrePunto(p);
     }
 
@@ -119,7 +132,7 @@ export class ControladorGraficador {
         this.redibujarMandelbrot();
     }
 
-    zoomMandelbrot(p) {
+    zoomMandelbrot(p: Punto) {
         graficadorMandelbrot.hacerZoomEn(p);
     }
 
@@ -128,7 +141,7 @@ export class ControladorGraficador {
         this._mostrarCSeleccionado();
     }
 
-    zoomJulia(p) {
+    zoomJulia(p: Punto) {
         graficadorJulia.hacerZoomEn(p);
     }
 
@@ -136,11 +149,11 @@ export class ControladorGraficador {
         graficadorJulia.reiniciarZoom();
     }
 
-    definirIteracionesMandelbrot(n) {
+    definirIteracionesMandelbrot(n: number) {
         graficadorMandelbrot.iteraciones = n;
     }
 
-    definirIteracionesJulia(n) {
+    definirIteracionesJulia(n: number) {
         graficadorJulia.iteraciones = n;
     }
 

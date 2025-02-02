@@ -1,15 +1,17 @@
 import { Canvas } from "../utilidades/Canvas";
+import {Punto} from "../dominio/Punto.ts";
+import { NumeroComplejo } from "../dominio/NumeroComplejo.ts";
 
 export class CanvasGraficador extends Canvas {
-    constructor(canvas) {
+    constructor(canvas: HTMLCanvasElement) {
         super(canvas);
         this._ctx.font = "14px monospace";
         this._ctx.textBaseline = "bottom";
         this._ctx.textAlign = "right";
     }
 
-    mostrarUbicacion(c) {
-        const numeroImprimible = (nro) => {
+    mostrarUbicacion(c: NumeroComplejo) {
+        const numeroImprimible = (nro: number) => {
             if (nro < 0) {
                 nro = -nro;
                 return ` - ${nro.toFixed(4)}`;
@@ -24,7 +26,7 @@ export class CanvasGraficador extends Canvas {
         );
     }
 
-    mostrarPunto(p) {
+    mostrarPunto(p: Punto) {
         const radio = 3;
         const ctx = this._ctx;
 
