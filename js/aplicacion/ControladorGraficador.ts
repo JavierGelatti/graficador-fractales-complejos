@@ -1,10 +1,10 @@
-import { PlanoComplejo } from "../graficador/PlanoComplejo";
+import {PlanoComplejo} from "../graficador/PlanoComplejo";
 import {Graficador, GraficadorJulia, GraficadorMandelbrot} from "./Graficadores";
-import { ConjuntoJulia, ConjuntoMandelbrot } from "../dominio/ConjuntoComplejo";
-import { NumeroComplejo } from "../dominio/NumeroComplejo";
+import {ConjuntoJulia, ConjuntoMandelbrot} from "../dominio/ConjuntoComplejo";
+import {NumeroComplejo} from "../dominio/NumeroComplejo";
 import {Coloreador} from "../coloreadores/Coloreador";
-import { CanvasGraficador } from "../graficador/CanvasGraficador";
-import { Punto } from "../dominio/Punto";
+import {CanvasGraficador} from "../graficador/CanvasGraficador";
+import {Punto} from "../dominio/Punto";
 
 let txtRe: HTMLInputElement, txtIm: HTMLInputElement;
 let f: (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo;

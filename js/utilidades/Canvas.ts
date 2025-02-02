@@ -1,8 +1,8 @@
 import {Color} from "./Color.ts";
 
 export class Canvas {
-    private readonly _canvas: HTMLCanvasElement;
     protected _ctx: CanvasRenderingContext2D;
+    private readonly _canvas: HTMLCanvasElement;
 
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
@@ -46,14 +46,14 @@ export class Canvas {
 
     addEventListener<K extends keyof HTMLElementEventMap>(
         evento: K,
-        manejador: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => void
+        manejador: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => void,
     ) {
         this.canvas.addEventListener(evento, manejador);
     }
 
     removeEventListener<K extends keyof HTMLElementEventMap>(
         evento: K,
-        manejador: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => void
+        manejador: (this: HTMLCanvasElement, ev: HTMLElementEventMap[K]) => void,
     ) {
         this.canvas.removeEventListener(evento, manejador);
     }

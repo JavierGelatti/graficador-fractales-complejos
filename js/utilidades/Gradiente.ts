@@ -1,4 +1,4 @@
-import { Color } from "./Color";
+import {Color} from "./Color";
 
 class ColorGradiente {
     color: Color;
@@ -13,7 +13,7 @@ class ColorGradiente {
 const compararColoresGradiente = (a: ColorGradiente, b: ColorGradiente) => a.porcentaje - b.porcentaje;
 
 const interpolarColores = (
-    colorFinal: Color, colorInicio: Color, razonColor: number
+    colorFinal: Color, colorInicio: Color, razonColor: number,
 ) => {
     const deltaR = colorFinal.r - colorInicio.r;
     const deltaG = colorFinal.g - colorInicio.g;
@@ -27,7 +27,7 @@ const interpolarColores = (
 };
 
 const buscarColor = (
-    colores: ColorGradiente[], iMin: number, iMax: number, porcentaje: number
+    colores: ColorGradiente[], iMin: number, iMax: number, porcentaje: number,
 ) => {
     if (iMin > iMax) {
         if (iMax === -1) return colores[iMin].color;
@@ -57,7 +57,7 @@ export class Gradiente {
     constructor(cInicio: Color, cFin: Color) {
         this._colores = [
             new ColorGradiente(cInicio, 0),
-            new ColorGradiente(cFin, 100)
+            new ColorGradiente(cFin, 100),
         ];
     }
 

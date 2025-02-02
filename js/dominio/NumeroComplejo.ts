@@ -7,11 +7,11 @@ const pow = Math.pow;
 const exp = (x: number) => pow(e, x);
 const cosh = (x: number) => {
     const ex = exp(x);
-    return 1/2 * (1/ex + ex);
+    return 1 / 2 * (1 / ex + ex);
 };
 const senh = (x: number) => {
     const ex = exp(x);
-    return 1/2 * (-1/ex + ex);
+    return 1 / 2 * (-1 / ex + ex);
 };
 
 export class NumeroComplejo {
@@ -50,7 +50,7 @@ export class NumeroComplejo {
     multiplicar(c2: NumeroComplejo) {
         return new NumeroComplejo(
             this.re * c2.re - this.im * c2.im,
-            this.re * c2.im + this.im * c2.re
+            this.re * c2.im + this.im * c2.re,
         );
     }
 
@@ -58,14 +58,14 @@ export class NumeroComplejo {
         const sc = pow(c2.re, 2) + pow(c2.im, 2);
         return new NumeroComplejo(
             (this.re * c2.re + this.im * c2.im) / sc,
-            (this.im * c2.re - this.re * c2.im) / sc
+            (this.im * c2.re - this.re * c2.im) / sc,
         );
     }
 
     sen() {
         return new NumeroComplejo(
             cosh(this.im) * sen(this.re),
-            cos(this.re) * senh(this.im)
+            cos(this.re) * senh(this.im),
         );
     }
 
@@ -73,7 +73,7 @@ export class NumeroComplejo {
         const ea = exp(this.re);
         return new NumeroComplejo(
             ea * cos(this.im),
-            ea * sen(this.im)
+            ea * sen(this.im),
         );
     }
 }

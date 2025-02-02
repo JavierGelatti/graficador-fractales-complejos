@@ -6,16 +6,25 @@ const radioEscape = 2;
 const radioEscape2 = radioEscape * radioEscape;
 
 export abstract class ConjuntoComplejo {
-    private readonly _funcionGeneradora: FuncionGeneradora;
-    private _nroIteraciones: number;
     ox: number;
     oy: number;
+    private readonly _funcionGeneradora: FuncionGeneradora;
 
     constructor(funcionGeneradora: FuncionGeneradora, numeroDeIteraciones: number, ox = 0, oy = 0) {
         this._funcionGeneradora = funcionGeneradora;
         this._nroIteraciones = numeroDeIteraciones;
         this.ox = ox;
         this.oy = oy;
+    }
+
+    private _nroIteraciones: number;
+
+    get nroIteraciones() {
+        return this._nroIteraciones;
+    }
+
+    set nroIteraciones(n: number) {
+        this._nroIteraciones = n;
     }
 
     getDatos(z: NumeroComplejo) {
@@ -32,16 +41,8 @@ export abstract class ConjuntoComplejo {
             modulo: z.mod,
             pertenece: i === maxIter,
             nroIter: i,
-            nroMaxIter: maxIter
+            nroMaxIter: maxIter,
         };
-    }
-
-    get nroIteraciones() {
-        return this._nroIteraciones;
-    }
-
-    set nroIteraciones(n: number) {
-        this._nroIteraciones = n;
     }
 
     getTrayectoria(z: NumeroComplejo) {
@@ -67,11 +68,11 @@ export class ConjuntoJulia extends ConjuntoComplejo {
         this._c = c;
     }
 
-    _getC() {
+    get c() {
         return this._c;
     }
 
-    get c() {
+    _getC() {
         return this._c;
     }
 }

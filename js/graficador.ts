@@ -38,7 +38,7 @@ const controlador = new ControladorGraficador(
     canvasMandelbrot, coloreadorRojo,
     canvasJulia, coloreadorAzul,
     nroIteraciones, f,
-    txtRe, txtIm
+    txtRe, txtIm,
 );
 controlador.iniciarGraficador();
 
@@ -47,7 +47,7 @@ const obtenerPunto: (evt: MouseEvent) => Punto = evt => {
     const rect = canvas.getBoundingClientRect();
     return {
         x: evt.clientX - rect.left - 3,
-        y: evt.clientY - rect.top
+        y: evt.clientY - rect.top,
     };
 };
 
@@ -131,7 +131,7 @@ const cambiarVisibilidadPanelIngresoC = () => {
 btnC.addEventListener("click", cambiarVisibilidadPanelIngresoC);
 
 const activarZoom = (
-    canvas: HTMLCanvasElement, btnZoom: HTMLElement, fnAntes: ((evt: MouseEvent) => void) | undefined, fnZoom: (evt: MouseEvent) => void
+    canvas: HTMLCanvasElement, btnZoom: HTMLElement, fnAntes: ((evt: MouseEvent) => void) | undefined, fnZoom: (evt: MouseEvent) => void,
 ) => {
     if (fnAntes !== undefined) canvas.removeEventListener("click", fnAntes);
     canvas.addEventListener("click", fnZoom);
@@ -142,7 +142,7 @@ const activarZoom = (
 };
 
 const desactivarZoom = (
-    canvas: HTMLCanvasElement, btnZoom: HTMLElement, fnAntes: ((evt: MouseEvent) => void) | undefined, fnZoom: (evt: MouseEvent) => void
+    canvas: HTMLCanvasElement, btnZoom: HTMLElement, fnAntes: ((evt: MouseEvent) => void) | undefined, fnZoom: (evt: MouseEvent) => void,
 ) => {
     if (fnAntes !== undefined) canvas.addEventListener("click", fnAntes);
     canvas.removeEventListener("click", fnZoom);

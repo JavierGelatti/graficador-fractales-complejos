@@ -6,7 +6,7 @@ type ObjetoDecorado<T> = T & {
     eliminarDecoracion(idDecoracion: IdDecoracion): void,
     decorar<K extends keyof T>(
         unMensaje: K,
-        nuevoMetodo: (this: ObjetoDecorado<T>, metodoOriginal: T[K] & Function, ...args: MethodParameters<T, K>) => unknown
+        nuevoMetodo: (this: ObjetoDecorado<T>, metodoOriginal: T[K] & Function, ...args: MethodParameters<T, K>) => unknown,
     ): IdDecoracion
 }
 
@@ -15,16 +15,16 @@ export function hacerDecorable<T extends object>(unObjeto: T): asserts unObjeto 
     unObjeto._decoraciones = new Map();
 
     // @ts-ignore
-    unObjeto.eliminarDecoracion = function(this: ObjetoDecorado<T>, idDecoracion: IdDecoracion) {
+    unObjeto.eliminarDecoracion = function (this: ObjetoDecorado<T>, idDecoracion: IdDecoracion) {
         this._decoraciones.get(idDecoracion)!.call(this);
         this._decoraciones.delete(idDecoracion);
     };
 
     // @ts-ignore
-    unObjeto.decorar = function<K extends keyof T>(
+    unObjeto.decorar = function <K extends keyof T>(
         this: ObjetoDecorado<T>,
         unMensaje: K,
-        nuevoMetodo: (this: ObjetoDecorado<T>, metodoOriginal: T[K] & Function, ...args: MethodParameters<T, K>) => unknown
+        nuevoMetodo: (this: ObjetoDecorado<T>, metodoOriginal: T[K] & Function, ...args: MethodParameters<T, K>) => unknown,
     ): IdDecoracion {
         // Aplicar la decoracion
         const metodoOriginal = Reflect.get(this, unMensaje) as Function;
@@ -32,7 +32,7 @@ export function hacerDecorable<T extends object>(unObjeto: T): asserts unObjeto 
             value: (...args: MethodParameters<T, K>) => {
                 nuevoMetodo.apply(this, [metodoOriginal.bind(this), ...args]);
             },
-            configurable: true
+            configurable: true,
         });
 
         // Registrar para deshacer la decoracion
@@ -40,7 +40,7 @@ export function hacerDecorable<T extends object>(unObjeto: T): asserts unObjeto 
         this._decoraciones.set(idEstaDecoracion, () => {
             Object.defineProperty(this, unMensaje, {
                 value: metodoOriginal,
-                configurable: true
+                configurable: true,
             });
         });
 

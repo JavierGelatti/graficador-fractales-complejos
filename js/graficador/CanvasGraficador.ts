@@ -1,6 +1,6 @@
-import { Canvas } from "../utilidades/Canvas";
+import {Canvas} from "../utilidades/Canvas";
 import {Punto} from "../dominio/Punto.ts";
-import { NumeroComplejo } from "../dominio/NumeroComplejo.ts";
+import {NumeroComplejo} from "../dominio/NumeroComplejo.ts";
 
 export class CanvasGraficador extends Canvas {
     constructor(canvas: HTMLCanvasElement) {
@@ -22,7 +22,7 @@ export class CanvasGraficador extends Canvas {
 
         this._ctx.fillText(
             `c =${numeroImprimible(c.re)}${numeroImprimible(c.im)} i`,
-            this.ancho - 5, this.alto - 5
+            this.ancho - 5, this.alto - 5,
         );
     }
 
@@ -31,8 +31,8 @@ export class CanvasGraficador extends Canvas {
         const ctx = this._ctx;
 
         ctx.save();
-        ctx.fillStyle = 'red';
-        ctx.strokeStyle = 'darkred';
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "darkred";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(p.x, p.y, radio, 0, 2 * Math.PI, false);

@@ -1,7 +1,7 @@
 import {Color} from "../utilidades/Color";
 import {ConjuntoComplejo} from "../dominio/ConjuntoComplejo.ts";
 
-export type Datos = ReturnType<ConjuntoComplejo['getDatos']>;
+export type Datos = ReturnType<ConjuntoComplejo["getDatos"]>;
 
 export interface Coloreador {
     getColor(datos: Datos): Color;
@@ -21,7 +21,7 @@ export class ColoreadorAzul implements Coloreador {
     }
 }
 
-export class ColoreadorRojo implements Coloreador{
+export class ColoreadorRojo implements Coloreador {
     getColor(datos: Datos) {
         if (datos.pertenece) {
             return new Color(0, 0, 0);

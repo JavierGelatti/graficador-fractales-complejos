@@ -1,13 +1,12 @@
-import { Punto } from "../dominio/Punto";
+import {Punto} from "../dominio/Punto";
 import {CanvasGraficador} from "../graficador/CanvasGraficador";
 import {PlanoComplejo} from "../graficador/PlanoComplejo";
 import {ConjuntoComplejo} from "../dominio/ConjuntoComplejo.ts";
-import { NumeroComplejo } from "../dominio/NumeroComplejo.ts";
+import {NumeroComplejo} from "../dominio/NumeroComplejo.ts";
 
 export class Graficador {
     protected _canvas: CanvasGraficador;
     protected _plano: PlanoComplejo;
-    protected _conjunto: ConjuntoComplejo;
     private _nroIteraciones: number;
     private _escuchadoresCursorSobrePunto: ((p: Punto, graficador: Graficador) => void)[];
 
@@ -16,6 +15,24 @@ export class Graficador {
         this._plano = plano;
         this._nroIteraciones = nroIteraciones;
         this._escuchadoresCursorSobrePunto = [];
+    }
+
+    protected _conjunto: ConjuntoComplejo;
+
+    set conjunto(c: ConjuntoComplejo) {
+        this._conjunto = c;
+        this._plano.graficar(this._conjunto);
+    }
+
+    get iteraciones() {
+        return this._nroIteraciones;
+    }
+
+    set iteraciones(n) {
+        this._nroIteraciones = n;
+        this._conjunto.nroIteraciones = n;
+        this._plano.graficar(this._conjunto);
+        this.redibujar();
     }
 
     getComplejoPara(unPuntoEnElCanvas: Punto) {
@@ -36,22 +53,6 @@ export class Graficador {
 
     reiniciarZoom() {
         this._plano.reiniciarZoom();
-        this._plano.graficar(this._conjunto);
-        this.redibujar();
-    }
-
-    set conjunto(c: ConjuntoComplejo) {
-        this._conjunto = c;
-        this._plano.graficar(this._conjunto);
-    }
-
-    get iteraciones() {
-        return this._nroIteraciones;
-    }
-
-    set iteraciones(n) {
-        this._nroIteraciones = n;
-        this._conjunto.nroIteraciones = n;
         this._plano.graficar(this._conjunto);
         this.redibujar();
     }

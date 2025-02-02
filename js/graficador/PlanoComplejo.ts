@@ -1,5 +1,5 @@
-import { Canvas } from "../utilidades/Canvas";
-import { NumeroComplejo } from "../dominio/NumeroComplejo";
+import {Canvas} from "../utilidades/Canvas";
+import {NumeroComplejo} from "../dominio/NumeroComplejo";
 import {Coloreador, Datos} from "../coloreadores/Coloreador";
 import {ConjuntoComplejo} from "../dominio/ConjuntoComplejo";
 
@@ -7,7 +7,6 @@ export class PlanoComplejo {
     private _capa: Canvas;
     private _capaTrayectoria: Canvas;
     private _coloreador: Coloreador;
-    private _colorTrayectoria: string;
     private _r_min: number | undefined;
     private _r_max: number;
     private _i_min: number;
@@ -20,6 +19,12 @@ export class PlanoComplejo {
         this._capa.alto = this._capaTrayectoria.alto = alto;
         this._coloreador = coloreador;
         this._colorTrayectoria = "blue";
+    }
+
+    private _colorTrayectoria: string;
+
+    set colorTrayectoria(unColor: string) {
+        this._colorTrayectoria = unColor;
     }
 
     get canvas() {
@@ -88,15 +93,11 @@ export class PlanoComplejo {
     getPunto(c: NumeroComplejo) {
         const x = (c.re - this._r_min) / (this._r_max - this._r_min) * this._capa.ancho;
         const y = (c.im - this._i_max) / (this._i_min - this._i_max) * this._capa.alto;
-        return { x, y };
+        return {x, y};
     }
 
     dibujarEn(ctx: CanvasRenderingContext2D) {
         ctx.drawImage(this._capa.canvas, 0, 0);
-    }
-
-    set colorTrayectoria(unColor: string) {
-        this._colorTrayectoria = unColor;
     }
 
     getCanvasTrayectoria(trayectoria: NumeroComplejo[]) {
@@ -105,7 +106,7 @@ export class PlanoComplejo {
         const n = trayectoria.length;
 
         ctx.lineWidth = 2;
-        ctx.lineJoin = 'round';
+        ctx.lineJoin = "round";
         ctx.strokeStyle = this._colorTrayectoria;
 
         ctx.beginPath();
