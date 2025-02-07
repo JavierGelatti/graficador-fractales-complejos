@@ -7,10 +7,12 @@ export class PlanoComplejo {
     private _capa: Canvas;
     private _capaTrayectoria: Canvas;
     private _coloreador: Coloreador;
-    private _r_min: number | undefined;
-    private _r_max: number;
-    private _i_min: number;
-    private _i_max: any;
+
+    private _extension: { r_min: number; r_max: number, i_min: number, i_max: number } | undefined;
+    private get _r_min() { return this._extension!.r_min; }
+    private get _r_max() { return this._extension!.r_max; }
+    private get _i_min() { return this._extension!.i_min; }
+    private get _i_max() { return this._extension!.i_max; }
 
     constructor(ancho: number, alto: number, coloreador: Coloreador) {
         this._capa = new Canvas(document.createElement("canvas"));
@@ -41,11 +43,12 @@ export class PlanoComplejo {
         const anchoPlano = (i_max - i_min) * this._capa.ancho / this._capa.alto;
         const r_med = (r_max + r_min) / 2;
 
-        this._r_min = r_med - anchoPlano / 2;
-        this._r_max = r_med + anchoPlano / 2;
-
-        this._i_min = i_min;
-        this._i_max = i_max;
+        this._extension = {
+            r_min: r_med - anchoPlano / 2,
+            r_max: r_med + anchoPlano / 2,
+            i_min: i_min,
+            i_max: i_max,
+        }
     }
 
     _limpiar() {
@@ -61,7 +64,7 @@ export class PlanoComplejo {
         const alto = this._capa.alto;
         const ancho = this._capa.ancho;
 
-        if (!this._r_min) this._definirDimensiones(conjuntoComplejo);
+        if (this._extension === undefined) this._definirDimensiones(conjuntoComplejo);
 
         this._limpiar();
 
@@ -96,10 +99,6 @@ export class PlanoComplejo {
         return {x, y};
     }
 
-    dibujarEn(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this._capa.canvas, 0, 0);
-    }
-
     getCanvasTrayectoria(trayectoria: NumeroComplejo[]) {
         this._capaTrayectoria.limpiar();
         const ctx = this._capaTrayectoria.canvas.getContext("2d")!;
@@ -125,13 +124,15 @@ export class PlanoComplejo {
         const ancho = this._r_max - this._r_min;
         const alto = this._i_min - this._i_max;
 
-        this._r_min = centro.re - ancho / factorZoom;
-        this._r_max = centro.re + ancho / factorZoom;
-        this._i_max = centro.im - alto / factorZoom;
-        this._i_min = centro.im + alto / factorZoom;
+        this._extension = {
+            r_min: centro.re - ancho / factorZoom,
+            r_max: centro.re + ancho / factorZoom,
+            i_max: centro.im - alto / factorZoom,
+            i_min: centro.im + alto / factorZoom,
+        }
     }
 
     reiniciarZoom() {
-        this._r_min = undefined;
+        this._extension = undefined;
     }
 }

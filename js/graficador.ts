@@ -40,8 +40,6 @@ const controlador = new ControladorGraficador(
     nroIteraciones, f,
     txtRe, txtIm,
 );
-controlador.iniciarGraficador();
-
 const obtenerPunto: (evt: MouseEvent) => Punto = evt => {
     const canvas = evt.target as HTMLCanvasElement;
     const rect = canvas.getBoundingClientRect();

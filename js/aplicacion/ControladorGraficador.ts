@@ -1,6 +1,6 @@
 import {PlanoComplejo} from "../graficador/PlanoComplejo";
 import {Graficador, GraficadorJulia, GraficadorMandelbrot} from "./Graficadores";
-import {ConjuntoJulia, ConjuntoMandelbrot} from "../dominio/ConjuntoComplejo";
+import {ConjuntoJulia} from "../dominio/ConjuntoComplejo";
 import {NumeroComplejo} from "../dominio/NumeroComplejo";
 import {Coloreador} from "../coloreadores/Coloreador";
 import {CanvasGraficador} from "../graficador/CanvasGraficador";
@@ -35,36 +35,29 @@ export class ControladorGraficador {
         const alto = canvasMandelbrot.alto;
 
         const planoJulia = new PlanoComplejo(ancho, alto, colorJulia);
-        graficadorJulia = new GraficadorJulia(canvasJulia, planoJulia, nroIter);
+        graficadorJulia = new GraficadorJulia(canvasJulia, planoJulia, nroIter, f);
 
         const planoMandelbrot = new PlanoComplejo(ancho, alto, colorMandel);
         planoMandelbrot.colorTrayectoria = "red";
-        graficadorMandelbrot = new GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter);
+        graficadorMandelbrot = new GraficadorMandelbrot(canvasMandelbrot, planoMandelbrot, nroIter, f);
 
         const planoVistaPJulia = new PlanoComplejo(130, 100, colorJulia);
         mostrarVistaPreviaJulia = (p, graficador: Graficador) => {
             const c = graficador.getComplejoPara(p);
             const conjuntoJulia = new ConjuntoJulia(f, 40, c);
             planoVistaPJulia.graficar(conjuntoJulia);
-            graficador._canvas.dibujar(planoVistaPJulia.canvas);
+            graficador.dibujar(planoVistaPJulia);
         };
 
-        mostrarTrayectoria = (p, graficador) => {
-            graficador.mostrarTrayectoria(p);
-        };
-    }
+        mostrarTrayectoria = (p, graficador) => graficador.mostrarTrayectoria(p);
 
-    iniciarGraficador() {
-        graficadorMandelbrot.conjunto = new ConjuntoMandelbrot(f, graficadorMandelbrot.iteraciones);
-
-        const o = new NumeroComplejo(0, 0);
-        this.seleccionarC(o);
+        this.seleccionarC(new NumeroComplejo(0, 0));
     }
 
     seleccionarC(c: NumeroComplejo | Punto) {
         this._actualizarCSeleccionado(c);
 
-        graficadorJulia.conjunto = new ConjuntoJulia(f, graficadorJulia.iteraciones, cSeleccionado);
+        graficadorJulia.cambiarConjunto(f, cSeleccionado);
         txtIm.value = String(cSeleccionado.im);
         txtRe.value = String(cSeleccionado.re);
 

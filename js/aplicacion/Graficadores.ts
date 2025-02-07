@@ -1,34 +1,26 @@
 import {Punto} from "../dominio/Punto";
 import {CanvasGraficador} from "../graficador/CanvasGraficador";
 import {PlanoComplejo} from "../graficador/PlanoComplejo";
-import {ConjuntoComplejo} from "../dominio/ConjuntoComplejo.ts";
+import {ConjuntoComplejo, ConjuntoJulia, ConjuntoMandelbrot} from "../dominio/ConjuntoComplejo.ts";
 import {NumeroComplejo} from "../dominio/NumeroComplejo.ts";
 
-export class Graficador {
+export class Graficador<Conjunto extends ConjuntoComplejo = ConjuntoComplejo> {
+    protected _conjunto: Conjunto;
     protected _canvas: CanvasGraficador;
     protected _plano: PlanoComplejo;
-    private _nroIteraciones: number;
+    protected _nroIteraciones: number;
     private _escuchadoresCursorSobrePunto: ((p: Punto, graficador: Graficador) => void)[];
 
-    constructor(canvas: CanvasGraficador, plano: PlanoComplejo, nroIteraciones: number) {
+    constructor(canvas: CanvasGraficador, plano: PlanoComplejo, nroIteraciones: number, conjunto: Conjunto) {
         this._canvas = canvas;
         this._plano = plano;
         this._nroIteraciones = nroIteraciones;
         this._escuchadoresCursorSobrePunto = [];
-    }
-
-    protected _conjunto: ConjuntoComplejo;
-
-    set conjunto(c: ConjuntoComplejo) {
-        this._conjunto = c;
+        this._conjunto = conjunto;
         this._plano.graficar(this._conjunto);
     }
 
-    get iteraciones() {
-        return this._nroIteraciones;
-    }
-
-    set iteraciones(n) {
+    set iteraciones(n: number) {
         this._nroIteraciones = n;
         this._conjunto.nroIteraciones = n;
         this._plano.graficar(this._conjunto);
@@ -75,16 +67,33 @@ export class Graficador {
     eliminarEscuchadorCursorSobrePunto(unEscuchador: (p: Punto, graficador: Graficador) => void) {
         this._escuchadoresCursorSobrePunto = this._escuchadoresCursorSobrePunto.filter(e => e !== unEscuchador);
     }
+
+    dibujar(plano: PlanoComplejo) {
+        this._canvas.dibujar(plano.canvas);
+    }
 }
 
-export class GraficadorJulia extends Graficador {
+export class GraficadorJulia extends Graficador<ConjuntoJulia> {
+    constructor(canvas: CanvasGraficador, plano: PlanoComplejo, nroIteraciones: number, f: (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo) {
+        super(canvas, plano, nroIteraciones, new ConjuntoJulia(f, nroIteraciones, new NumeroComplejo(0, 0)));
+    }
+
     redibujar() {
         super.redibujar();
         this._canvas.mostrarUbicacion(this._conjunto.c);
     }
+
+    cambiarConjunto(f: (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo, c: NumeroComplejo) {
+        this._conjunto = new ConjuntoJulia(f, this._nroIteraciones, c);
+        this._plano.graficar(this._conjunto);
+    }
 }
 
-export class GraficadorMandelbrot extends Graficador {
+export class GraficadorMandelbrot extends Graficador<ConjuntoMandelbrot> {
+    constructor(canvas: CanvasGraficador, plano: PlanoComplejo, nroIteraciones: number, f: (z: NumeroComplejo, c: NumeroComplejo) => NumeroComplejo) {
+        super(canvas, plano, nroIteraciones, new ConjuntoMandelbrot(f, nroIteraciones));
+    }
+
     cursorSobrePunto(unPuntoDelCanvas: Punto) {
         const c = this.getComplejoPara(unPuntoDelCanvas);
         this.redibujar();
