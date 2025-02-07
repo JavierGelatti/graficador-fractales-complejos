@@ -3,34 +3,29 @@ import {ConjuntoComplejo} from "../dominio/ConjuntoComplejo.ts";
 
 export type Datos = ReturnType<ConjuntoComplejo["getDatos"]>;
 
-export interface Coloreador {
-    getColor(datos: Datos): Color;
+export abstract class Coloreador {
+    getColor(datos: Datos): Color {
+        if (datos.pertenece) return new Color(0, 0, 0);
+
+        return this._colorPara(
+            Math.floor(255 * (1 - datos.nroIter / datos.nroMaxIter))
+        );
+    }
+
+    /**
+     * @param componenteDeColor número entre 0 y 255
+     */
+    protected abstract _colorPara(componenteDeColor: number): Color;
 }
 
-export class ColoreadorAzul implements Coloreador {
-    getColor(datos: Datos) {
-        if (datos.pertenece) {
-            return new Color(0, 0, 0);
-        } else {
-            const t = datos.nroIter;
-            const r = 255 - Math.floor(255 * t / datos.nroMaxIter);
-            const g = 255 - Math.floor(255 * t / datos.nroMaxIter);
-            const b = (255 - (t) % 256);
-            return new Color(r, g, b);
-        }
+export class ColoreadorAzul extends Coloreador {
+    protected _colorPara(x: number): Color {
+        return new Color(x, x, 255);
     }
 }
 
-export class ColoreadorRojo implements Coloreador {
-    getColor(datos: Datos) {
-        if (datos.pertenece) {
-            return new Color(0, 0, 0);
-        } else {
-            const t = datos.nroIter;
-            const r = (255 - (t) % 256);
-            const g = 255 - Math.floor(255 * t / datos.nroMaxIter);
-            const b = 255 - Math.floor(255 * t / datos.nroMaxIter);
-            return new Color(r, g, b);
-        }
+export class ColoreadorRojo extends Coloreador {
+    protected _colorPara(x: number): Color {
+        return new Color(255, x, x);
     }
 }
